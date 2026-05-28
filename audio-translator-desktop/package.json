@@ -4,8 +4,9 @@
   "main": "main.js",
   "scripts": {
     "start": "electron . --no-sandbox",
-    "build": "electron-builder",
-    "build:mac": "electron-builder --mac",
+    "prebuild": "bash scripts/prebuild.sh",
+    "build": "npm run prebuild && electron-builder",
+    "build:mac": "npm run prebuild && electron-builder --mac",
     "postinstall": "cd ../audio-translator-proxy && npm install"
   },
   "keywords": [],
@@ -29,6 +30,18 @@
         "from": "../audio-translator-proxy",
         "to": "audio-translator-proxy",
         "filter": ["**/*", "!node_modules/.cache"]
+      },
+      {
+        "from": "scripts/create-aggregate-device",
+        "to": "audio-tools/create-aggregate-device"
+      },
+      {
+        "from": "scripts/SwitchAudioSource",
+        "to": "audio-tools/SwitchAudioSource"
+      },
+      {
+        "from": "scripts/blackhole-2ch.pkg",
+        "to": "audio-tools/blackhole-2ch.pkg"
       }
     ],
     "files": [

@@ -11,6 +11,7 @@ let configPath = path.join(__dirname, 'config.json');
 let doubaoWs = null;
 let doubaoPingTimer = null;
 let originalOutputDeviceName = null;
+let didSwitchOutput = false;
 
 const DOUBAO_WS_URL = 'ws://localhost:3000';
 const KEYCHAIN_SERVICE = 'audio-translator-desktop';
@@ -335,6 +336,13 @@ function stopProxy() {
   }
 }
 
+function getToolPath(toolName) {
+  if (app.isPackaged) {
+    return path.join(process.resourcesPath, 'audio-tools', toolName);
+  }
+  return path.join(__dirname, 'scripts', toolName);
+}
+
 function createMainWindow() {
   mainWindow = new BrowserWindow({
     width: 500,
@@ -409,14 +417,15 @@ app.on('before-quit', async (event) => {
     app.isRestoringAudioOutput = true;
     closeDoubaoWs();
     stopProxy();
-    try {
-      const result = await restoreOriginalOutputDevice();
-      console.log('[Main] Restore output result:', result);
-    } catch (e) {
-      console.error('[Main] Failed to restore output:', e);
-    } finally {
-      app.quit();
+    if (didSwitchOutput) {
+      try {
+        const result = await restoreOriginalOutputDevice();
+        console.log('[Main] Restore output result:', result);
+      } catch (e) {
+        console.error('[Main] Failed to restore output:', e);
+      }
     }
+    app.quit();
   }
 });
 
@@ -452,6 +461,107 @@ ipcMain.handle('open-audio-midi-setup', async () => {
 ipcMain.handle('open-sound-settings', async () => {
   await shell.openExternal('x-apple.systempreferences:com.apple.Sound-Settings.extension');
   return { ok: true };
+});
+
+ipcMain.handle('open-privacy-security', async () => {
+  await shell.openExternal('x-apple.systempreferences:com.apple.preference.security');
+  return { ok: true };
+});
+
+ipcMain.handle('get-tool-path', async (event, toolName) => {
+  return getToolPath(toolName);
+});
+
+ipcMain.handle('install-blackhole', async () => {
+  const pkgPath = getToolPath('blackhole-2ch.pkg');
+  if (!fs.existsSync(pkgPath)) {
+    throw new Error(`BlackHole 安装包不存在: ${pkgPath}`);
+  }
+  return new Promise((resolve, reject) => {
+    const child = spawn('/usr/bin/open', [pkgPath], { detached: true, stdio: 'ignore' });
+    child.on('error', reject);
+    child.on('close', (code) => {
+      if (code === 0) resolve({ ok: true });
+      else reject(new Error(`安装器启动失败，退出码: ${code}`));
+    });
+  });
+});
+
+ipcMain.handle('create-multi-output', async (event, targetDevice) => {
+  const helperPath = getToolPath('create-aggregate-device');
+  if (!fs.existsSync(helperPath)) {
+    throw new Error(`多输出设备创建工具不存在: ${helperPath}`);
+  }
+
+  try {
+    const args = targetDevice ? [targetDevice] : [];
+    const stdout = await runCommand(helperPath, args);
+    const parts = stdout.split(':');
+    // Format: OK:deviceID:status:name  or  ERROR:message
+    if (parts[0] === 'OK') {
+      return { ok: true, deviceId: parseInt(parts[1], 10), status: parts[2], deviceName: parts[3] || '' };
+    }
+    throw new Error(stdout.replace('ERROR:', '').trim());
+  } catch (e) {
+    throw new Error(`创建多输出设备失败: ${e.message}`);
+  }
+});
+
+ipcMain.handle('list-output-devices', async () => {
+  const saPath = getToolPath('SwitchAudioSource');
+  if (!fs.existsSync(saPath)) {
+    return { ok: false, devices: [], message: 'SwitchAudioSource not found' };
+  }
+
+  try {
+    const stdout = await runCommand(saPath, ['-a', '-t', 'output']);
+    const devices = stdout.split('\n')
+      .map(s => s.trim())
+      .filter(name => {
+        // Exclude BlackHole (virtual), aggregate/multi-output devices
+        if (!name) return false;
+        const lower = name.toLowerCase();
+        if (lower.includes('blackhole')) return false;
+        if (lower.includes('aggregate')) return false;
+        if (lower.includes('multi')) return false;
+        if (lower.includes('多输出')) return false;
+        if (lower.includes('realtime translator')) return false;
+        return true;
+      });
+    return { ok: true, devices };
+  } catch (e) {
+    return { ok: false, devices: [], message: e.message };
+  }
+});
+
+ipcMain.handle('switch-output', async (event, deviceName) => {
+  const saPath = getToolPath('SwitchAudioSource');
+  if (!fs.existsSync(saPath)) {
+    throw new Error(`SwitchAudioSource 不存在: ${saPath}`);
+  }
+
+  try {
+    const stdout = await runCommand(saPath, ['-a']);
+    const devices = stdout.split('\n').map(s => s.trim()).filter(Boolean);
+
+    if (devices.includes(deviceName)) {
+      await runCommand(saPath, ['-t', 'output', '-s', deviceName]);
+      didSwitchOutput = true;
+      return { ok: true, switched: true, deviceName };
+    }
+
+    // Try partial match
+    const match = devices.find(d => d.toLowerCase().includes(deviceName.toLowerCase()));
+    if (match) {
+      await runCommand(saPath, ['-t', 'output', '-s', match]);
+      didSwitchOutput = true;
+      return { ok: true, switched: true, deviceName: match };
+    }
+
+    throw new Error(`未找到输出设备: ${deviceName}`);
+  } catch (e) {
+    throw new Error(`切换输出设备失败: ${e.message}`);
+  }
 });
 
 ipcMain.handle('show-floating', () => {
