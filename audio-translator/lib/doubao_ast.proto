@@ -1,0 +1,195 @@
+// 豆包同传大模型 (AST) Protobuf 协议定义
+// 基于文档: https://www.volcengine.com/docs/6561/...
+
+syntax = "proto3";
+
+package doubao.ast;
+
+// 请求消息
+message Request {
+  // 请求元信息
+  RequestMeta request_meta = 1;
+  
+  // 事件类型
+  // 100: StartSession, 200: TaskRequest, 201: UpdateConfig, 102: FinishSession
+  int32 event = 2;
+  
+  // 用户信息
+  UserInfo user = 3;
+  
+  // 请求配置
+  RequestConfig request = 4;
+  
+  // 源音频配置
+  AudioConfig source_audio = 5;
+  
+  // 目标音频配置 (s2s模式必填)
+  AudioConfig target_audio = 6;
+}
+
+// 请求元信息
+message RequestMeta {
+  // 会话ID，建议使用UUID
+  string session_id = 1;
+}
+
+// 用户信息
+message UserInfo {
+  // 用户标识
+  string uid = 1;
+  // 设备名称
+  string did = 2;
+  // 操作系统及API版本号
+  string platform = 3;
+  // SDK版本
+  string sdk_version = 4;
+}
+
+// 请求配置
+message RequestConfig {
+  // 模式: s2s (语音到语音) 或 s2t (语音到文本)
+  string mode = 1;
+  
+  // 说话人音色 (s2s模式有效)
+  string speaker_id = 2;
+  
+  // 语速 [-50, 100]
+  int32 speech_rate = 3;
+  
+  // 源语言: zh, en, ja, id, es, pt, de, fr, zhen
+  string source_language = 4;
+  
+  // 目标语言: zh, en, ja, id, es, pt, de, fr, zhen
+  string target_language = 5;
+  
+  // 语料/干预词配置
+  CorpusConfig corpus = 6;
+}
+
+// 语料配置
+message CorpusConfig {
+  // 热词列表
+  repeated string hot_words_list = 1;
+  // 热词表ID
+  string boosting_table_id = 2;
+  // 热词表名
+  string boosting_table_name = 3;
+  // 替换词 (JSON格式字符串)
+  string correct_words = 4;
+  // 替换词表ID
+  string regex_correct_table_id = 5;
+  // 替换词表名
+  string regex_correct_table_name = 6;
+  // 术语列表 (JSON格式)
+  string glossary_list = 7;
+  // 术语词表ID
+  string glossary_table_id = 8;
+  // 术语词表名
+  string glossary_table_name = 9;
+}
+
+// 音频配置
+message AudioConfig {
+  // 音频容器格式: wav, pcm, ogg_opus
+  string format = 1;
+  // 音频编码格式: raw (pcm编码)
+  string codec = 2;
+  // 音频采样率: 16000
+  int32 rate = 3;
+  // 音频采样点位数: 16
+  int32 bits = 4;
+  // 音频声道数: 1 (单声道)
+  int32 channel = 5;
+  // 音频数据 (用于TaskRequest)
+  bytes data = 6;
+}
+
+// 响应消息
+message Response {
+  // 响应元信息
+  ResponseMeta response_meta = 1;
+  
+  // 事件类型
+  // 150: SessionStarted, 651: SourceSubtitleResponse, 654: TranslationSubtitleResponse
+  // 152: SessionFinished, 153: SessionFailed, 154: UsageResponse
+  int32 event = 2;
+  
+  // 文本内容 (原文或译文)
+  string text = 3;
+  
+  // 二进制数据 (TTS音频数据)
+  bytes data = 4;
+  
+  // 起始时间 (毫秒)
+  int32 start_time = 5;
+  
+  // 结束时间 (毫秒)
+  int32 end_time = 6;
+  
+  // 说话人是否切换
+  bool spk_chg = 7;
+  
+  // 静音时间 (毫秒)
+  int32 muted_duration_ms = 8;
+}
+
+// 响应元信息
+message ResponseMeta {
+  // 会话ID
+  string session_id = 1;
+  // 状态码
+  int32 status_code = 2;
+  // 错误信息
+  string message = 3;
+  // 计量计费信息
+  BillingInfo billing = 4;
+}
+
+// 计费信息
+message BillingInfo {
+  // 音频持续时长 (毫秒)
+  int32 duration_msec = 1;
+  // 计费详情
+  repeated BillingItem items = 2;
+}
+
+// 计费项
+message BillingItem {
+  // token分类: output_text_tokens, output_audio_tokens, input_audio_tokens
+  string unit = 1;
+  // 消耗token量
+  float quantity = 2;
+}
+
+// 事件类型常量
+enum EventType {
+  // 发送端事件
+  START_SESSION = 100;
+  FINISH_SESSION = 102;
+  TASK_REQUEST = 200;
+  UPDATE_CONFIG = 201;
+  
+  // 接收端事件
+  SESSION_STARTED = 150;
+  SESSION_FINISHED = 152;
+  SESSION_FAILED = 153;
+  USAGE_RESPONSE = 154;
+  
+  // 原文事件
+  SOURCE_SUBTITLE_START = 650;
+  SOURCE_SUBTITLE_RESPONSE = 651;
+  SOURCE_SUBTITLE_END = 652;
+  
+  // 译文事件
+  TRANSLATION_SUBTITLE_START = 653;
+  TRANSLATION_SUBTITLE_RESPONSE = 654;
+  TRANSLATION_SUBTITLE_END = 655;
+  
+  // TTS事件
+  TTS_SENTENCE_START = 350;
+  TTS_SENTENCE_END = 351;
+  TTS_RESPONSE = 352;
+  
+  // 静音事件
+  AUDIO_MUTED = 250;
+}

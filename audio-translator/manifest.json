@@ -1,0 +1,64 @@
+{
+  "manifest_version": 3,
+  "name": "实时音频翻译字幕",
+  "version": "1.0",
+  "description": "实时捕获网页音频，印尼语转中文悬浮字幕，支持豆包同传实时翻译",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "tabCapture",
+    "offscreen"
+  ],
+  "host_permissions": [
+    "<all_urls>",
+    "wss://openspeech.bytedance.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "css": ["content.css"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "实时音频翻译",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "options_page": "options.html",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "commands": {
+    "toggle-translation": {
+      "suggested_key": {
+        "default": "Alt+T"
+      },
+      "description": "开始/停止翻译"
+    },
+    "toggle-subtitle": {
+      "suggested_key": {
+        "default": "Alt+H"
+      },
+      "description": "显示/隐藏字幕"
+    }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["lib/*"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

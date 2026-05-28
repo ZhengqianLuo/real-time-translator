@@ -1,0 +1,51 @@
+{
+  "name": "audio-translator-desktop",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron . --no-sandbox",
+    "build": "electron-builder",
+    "build:mac": "electron-builder --mac",
+    "postinstall": "cd ../audio-translator-proxy && npm install"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "实时音频翻译桌面应用",
+  "build": {
+    "appId": "com.bytedance.audio-translator-desktop",
+    "productName": "实时翻译",
+    "mac": {
+      "category": "public.app-category.utilities",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["arm64", "x64"]
+        }
+      ]
+    },
+    "extraResources": [
+      {
+        "from": "../audio-translator-proxy",
+        "to": "audio-translator-proxy",
+        "filter": ["**/*", "!node_modules/.cache"]
+      }
+    ],
+    "files": [
+      "main.js",
+      "index.html",
+      "renderer.js",
+      "floating.html",
+      "floating.js",
+      "config.json",
+      "node_modules/**/*"
+    ]
+  },
+  "devDependencies": {
+    "electron": "^41.7.0",
+    "electron-builder": "^25.1.8"
+  },
+  "dependencies": {
+    "ws": "^8.20.1"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "audio-translator-proxy",
+  "version": "1.0.0",
+  "description": "WebSocket proxy for Doubao AST service",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node index.js"
+  },
+  "dependencies": {
+    "protobufjs": "^8.4.0",
+    "ws": "^8.14.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

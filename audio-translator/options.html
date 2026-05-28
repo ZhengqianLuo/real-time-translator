@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>实时音频翻译 - 设置</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" width="28" height="28">
+          <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+        </svg>
+        <h1>实时音频翻译设置</h1>
+      </div>
+    </header>
+    
+    <main class="main">
+      <!-- API 配置 -->
+      <section class="section">
+        <h2 class="section-title">
+          <svg viewBox="0 0 24 24" width="20" height="20">
+            <path fill="currentColor" d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+          </svg>
+          API 配置
+        </h2>
+        
+        <div class="form-group">
+          <label class="form-label" for="provider">翻译服务提供商</label>
+          <select class="form-select" id="provider">
+            <option value="openai">OpenAI (Whisper + GPT)</option>
+            <option value="doubao">豆包大模型 (火山引擎 HTTP)</option>
+            <option value="doubao-ast">豆包同传 (火山引擎 WebSocket 实时)</option>
+            <option value="claude">Claude (预留)</option>
+            <option value="gemini">Gemini (预留)</option>
+          </select>
+          <p class="form-hint">选择 AI 服务提供商，推荐使用豆包同传实现真正的实时翻译</p>
+        </div>
+
+        <!-- 豆包 HTTP 模式配置 -->
+        <div class="form-group" id="doubaoEndpointGroup" style="display: none;">
+          <label class="form-label" for="doubaoEndpoint">豆包 API 端点</label>
+          <input
+            type="text"
+            class="form-input"
+            id="doubaoEndpoint"
+            placeholder="https://ark.cn-beijing.volces.com/api/v3"
+            value="https://ark.cn-beijing.volces.com/api/v3"
+          >
+          <p class="form-hint">豆包大模型 API 端点地址，通常不需要修改</p>
+        </div>
+
+        <div class="form-group" id="doubaoModelGroup" style="display: none;">
+          <label class="form-label" for="doubaoModel">豆包模型 ID</label>
+          <input
+            type="text"
+            class="form-input"
+            id="doubaoModel"
+            placeholder="ep-xxxxxxxxxxxxx 或模型名称"
+          >
+          <p class="form-hint">请输入豆包模型 ID（以 ep- 开头的端点 ID）或模型名称</p>
+        </div>
+
+        <!-- 豆包同传 WebSocket 模式配置 -->
+        <div class="form-group" id="doubaoAstGroup" style="display: none;">
+          <label class="form-label" for="appKey">豆包同传 App Key</label>
+          <div class="input-group">
+            <input 
+              type="password" 
+              class="form-input" 
+              id="appKey" 
+              placeholder="请输入豆包同传 App Key"
+              autocomplete="off"
+            >
+            <button type="button" class="btn-icon" id="toggleAppKey">
+              <svg viewBox="0 0 24 24" width="18" height="18">
+                <path fill="currentColor" d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+              </svg>
+            </button>
+          </div>
+          <p class="form-hint">在火山引擎控制台获取的 App Key，用于 WebSocket 鉴权</p>
+        </div>
+
+        <div class="form-group" id="doubaoResourceIdGroup" style="display: none;">
+          <label class="form-label" for="resourceId">Resource ID</label>
+          <input
+            type="text"
+            class="form-input"
+            id="resourceId"
+            placeholder="volc.service_type.10053"
+            value="volc.service_type.10053"
+          >
+          <p class="form-hint">豆包同传服务 Resource ID，通常使用默认值即可</p>
+        </div>
+        
+        <div class="form-group" id="apiKeyGroup">
+          <label class="form-label" for="apiKey">API Key</label>
+          <div class="input-group">
+            <input 
+              type="password" 
+              class="form-input" 
+              id="apiKey" 
+              placeholder="请输入您的 API Key"
+              autocomplete="off"
+            >
+            <button type="button" class="btn-icon" id="toggleApiKey">
+              <svg viewBox="0 0 24 24" width="18" height="18">
+                <path fill="currentColor" d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+              </svg>
+            </button>
+          </div>
+          <p class="form-hint">您的 API Key 将安全地存储在本地，不会上传到任何服务器</p>
+        </div>
+      </section>
+      
+      <!-- 翻译设置 -->
+      <section class="section">
+        <h2 class="section-title">
+          <svg viewBox="0 0 24 24" width="20" height="20">
+            <path fill="currentColor" d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/>
+          </svg>
+          翻译设置
+        </h2>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="sourceLanguage">源语言</label>
+            <select class="form-select" id="sourceLanguage">
+              <option value="id" selected>印尼语 (Indonesian)</option>
+              <option value="en">英语 (English)</option>
+              <option value="ja">日语 (Japanese)</option>
+              <option value="ko">韩语 (Korean)</option>
+              <option value="th">泰语 (Thai)</option>
+              <option value="vi">越南语 (Vietnamese)</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="targetLanguage">目标语言</label>
+            <select class="form-select" id="targetLanguage">
+              <option value="zh" selected>中文 (Chinese)</option>
+              <option value="en">英语 (English)</option>
+            </select>
+          </div>
+        </div>
+      </section>
+      
+      <!-- 字幕样式 -->
+      <section class="section">
+        <h2 class="section-title">
+          <svg viewBox="0 0 24 24" width="20" height="20">
+            <path fill="currentColor" d="M9 4h6v2H9V4zm10 16H5V8h14v12zM7 10v8h10v-8H7z"/>
+          </svg>
+          字幕样式
+        </h2>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="fontSize">字体大小</label>
+            <div class="range-group">
+              <input 
+                type="range" 
+                class="form-range" 
+                id="fontSize" 
+                min="12" 
+                max="20" 
+                value="14"
+              >
+              <span class="range-value" id="fontSizeValue">14px</span>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="maxLines">最大显示行数</label>
+            <div class="range-group">
+              <input 
+                type="range" 
+                class="form-range" 
+                id="maxLines" 
+                min="3" 
+                max="10" 
+                value="5"
+              >
+              <span class="range-value" id="maxLinesValue">5行</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="opacity">背景透明度</label>
+            <div class="range-group">
+              <input 
+                type="range" 
+                class="form-range" 
+                id="opacity" 
+                min="0.3" 
+                max="1" 
+                step="0.05"
+                value="0.75"
+              >
+              <span class="range-value" id="opacityValue">75%</span>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="autoScroll">自动滚动</label>
+            <label class="toggle">
+              <input type="checkbox" id="autoScroll" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+      </section>
+      
+      <!-- 保存按钮 -->
+      <div class="actions">
+        <button class="btn btn-primary" id="saveBtn">
+          <svg viewBox="0 0 24 24" width="18" height="18">
+            <path fill="currentColor" d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/>
+          </svg>
+          保存设置
+        </button>
+        <button class="btn btn-secondary" id="resetBtn">恢复默认</button>
+      </div>
+      
+      <div class="message" id="message"></div>
+    </main>
+    
+    <footer class="footer">
+      <p>实时音频翻译字幕插件 v1.0</p>
+    </footer>
+  </div>
+  
+  <script src="options.js"></script>
+</body>
+</html>

@@ -1,0 +1,284 @@
+/* 字幕悬浮窗样式 */
+
+#audio-translator-subtitle {
+  position: fixed !important;
+  z-index: 2147483647 !important;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  user-select: none !important;
+}
+
+#audio-translator-subtitle * {
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.at-subtitle-wrapper {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 400px !important;
+  min-width: 300px !important;
+  min-height: 120px !important;
+  max-height: 400px !important;
+}
+
+.at-subtitle-container {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  height: 100% !important;
+  background-color: rgba(0, 0, 0, 0.75) !important;
+  border-radius: 8px !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+  overflow: hidden !important;
+  color: #FFFFFF !important;
+  font-size: 14px !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}
+
+/* 标题栏 */
+.at-subtitle-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  height: 32px !important;
+  padding: 0 12px !important;
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  cursor: grab !important;
+  flex-shrink: 0 !important;
+}
+
+.at-subtitle-header:active {
+  cursor: grabbing !important;
+}
+
+.at-header-left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.at-status-indicator {
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50% !important;
+  background-color: #4CAF50 !important;
+  transition: all 0.3s ease !important;
+}
+
+.at-status-indicator.ready {
+  background-color: #4CAF50 !important;
+}
+
+.at-status-indicator.translating {
+  background-color: #FFC107 !important;
+  animation: pulse 1s infinite !important;
+}
+
+.at-status-indicator.error {
+  background-color: #F44336 !important;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.at-title {
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: #FFFFFF !important;
+}
+
+.at-header-controls {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+
+.at-btn {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 22px !important;
+  height: 22px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  background-color: transparent !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.at-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: #FFFFFF !important;
+}
+
+.at-btn-close:hover {
+  background-color: #F44336 !important;
+}
+
+.at-btn.active {
+  color: #4A90D9 !important;
+}
+
+/* 内容区域 */
+.at-subtitle-content {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+.at-subtitle-list {
+  flex: 1 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding: 12px !important;
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent !important;
+}
+
+.at-subtitle-list::-webkit-scrollbar {
+  width: 4px !important;
+}
+
+.at-subtitle-list::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+.at-subtitle-list::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  border-radius: 2px !important;
+}
+
+.at-subtitle-item {
+  margin-bottom: 10px !important;
+  padding: 8px 10px !important;
+  border-radius: 6px !important;
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  border-left: 3px solid transparent !important;
+  transition: all 0.3s ease !important;
+}
+
+.at-subtitle-item:last-child {
+  margin-bottom: 0 !important;
+}
+
+.at-subtitle-item.latest {
+  border-left-color: #4A90D9 !important;
+  background-color: rgba(74, 144, 217, 0.1) !important;
+}
+
+.at-subtitle-translated {
+  color: #FFFFFF !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  word-wrap: break-word !important;
+  word-break: break-word !important;
+}
+
+.at-subtitle-original {
+  color: rgba(255, 255, 255, 0.5) !important;
+  font-size: 12px !important;
+  line-height: 1.4 !important;
+  margin-top: 4px !important;
+  word-wrap: break-word !important;
+  word-break: break-word !important;
+}
+
+/* 状态栏 */
+.at-status-bar {
+  display: flex !important;
+  align-items: center !important;
+  padding: 4px 12px !important;
+  background-color: rgba(0, 0, 0, 0.2) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+  flex-shrink: 0 !important;
+}
+
+.at-status-text {
+  font-size: 11px !important;
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* 底部控制栏 */
+.at-subtitle-footer {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  height: 36px !important;
+  padding: 0 12px !important;
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  flex-shrink: 0 !important;
+}
+
+.at-btn-text {
+  font-size: 12px !important;
+  color: rgba(255, 255, 255, 0.6) !important;
+  background: none !important;
+  border: none !important;
+  cursor: pointer !important;
+  padding: 4px 8px !important;
+  border-radius: 4px !important;
+  transition: all 0.2s ease !important;
+}
+
+.at-btn-text:hover {
+  color: #FFFFFF !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.at-auto-scroll-label {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  font-size: 12px !important;
+  color: rgba(255, 255, 255, 0.6) !important;
+  cursor: pointer !important;
+}
+
+.at-auto-scroll-checkbox {
+  width: 14px !important;
+  height: 14px !important;
+  cursor: pointer !important;
+  accent-color: #4A90D9 !important;
+}
+
+/* 响应式调整 */
+@media (max-width: 500px) {
+  #audio-translator-subtitle {
+    width: calc(100vw - 20px) !important;
+    left: 10px !important;
+    right: 10px !important;
+  }
+  
+  .at-subtitle-wrapper {
+    width: 100% !important;
+    min-width: auto !important;
+  }
+}
+
+/* 确保在最上层 */
+#audio-translator-subtitle,
+#audio-translator-subtitle * {
+  z-index: 2147483647 !important;
+}
+
+/* 防止被其他样式覆盖 */
+#audio-translator-subtitle.at-subtitle-wrapper {
+  all: initial !important;
+  position: fixed !important;
+  z-index: 2147483647 !important;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}

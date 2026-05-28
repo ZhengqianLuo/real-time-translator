@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>实时音频翻译</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #333;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    .container {
+      background: white;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #667eea;
+      font-size: 24px;
+    }
+    .section {
+      margin-bottom: 25px;
+    }
+    .section-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #555;
+    }
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 30px;
+    }
+    button {
+      flex: 1;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    .btn-secondary {
+      background: #f0f0f0;
+      color: #333;
+    }
+    .btn-danger {
+      background: #ff4757;
+      color: white;
+    }
+    .status {
+      text-align: center;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+      font-weight: 500;
+    }
+    .status-idle { background: #f0f0f0; color: #666; }
+    .status-translating { background: #d4edda; color: #155724; }
+    .status-error { background: #f8d7da; color: #721c24; }
+    .log-box {
+      margin-top: 20px;
+      padding: 15px;
+      background: #1e1e1e;
+      color: #00ff00;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 12px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .log-line {
+      margin-bottom: 5px;
+      border-bottom: 1px solid #333;
+      padding-bottom: 5px;
+    }
+    .hint {
+      margin-top: 8px;
+      color: #777;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .env-box {
+      background: #f7f8ff;
+      border: 1px solid #dfe3ff;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 12px;
+      color: #555;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+    .wizard-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .wizard-overlay.hidden {
+      display: none;
+    }
+    .wizard-card {
+      background: white;
+      border-radius: 16px;
+      padding: 32px 28px 28px;
+      width: 420px;
+      max-width: 95vw;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .wizard-steps {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    .wizard-step-dot {
+      flex: 1;
+      height: 4px;
+      border-radius: 2px;
+      background: #e0e0e0;
+      transition: background 0.3s;
+    }
+    .wizard-step-dot.active { background: #667eea; }
+    .wizard-step-dot.done { background: #27ae60; }
+    .wizard-step-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .wizard-step-body {
+      margin-bottom: 24px;
+      min-height: 150px;
+    }
+    .wizard-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+    .wizard-buttons button {
+      flex: unset;
+      padding: 12px 24px;
+    }
+    .check-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      border-radius: 8px;
+      background: #f8f9fa;
+      font-size: 14px;
+    }
+    .check-icon {
+      margin-right: 10px;
+      font-size: 20px;
+    }
+    .check-icon.ok { color: #27ae60; }
+    .check-icon.warn { color: #f39c12; }
+    .check-icon.error { color: #e74c3c; }
+    .fix-link {
+      color: #667eea;
+      cursor: pointer;
+      font-weight: 600;
+      margin-left: auto;
+      font-size: 13px;
+    }
+    .fix-link:hover { text-decoration: underline; }
+    .guide-text {
+      font-size: 13px;
+      color: #777;
+      line-height: 1.7;
+      margin-top: 12px;
+    }
+    .guide-text a {
+      color: #667eea;
+      font-weight: 600;
+    }
+    .test-result {
+      text-align: center;
+      padding: 20px;
+    }
+    .test-result .icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+    .test-result.success .icon { color: #27ae60; }
+    .test-result.fail .icon { color: #e74c3c; }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="wizard-overlay hidden" id="wizardOverlay">
+    <div class="wizard-card">
+      <div class="wizard-steps">
+        <div class="wizard-step-dot active" id="dot1"></div>
+        <div class="wizard-step-dot" id="dot2"></div>
+        <div class="wizard-step-dot" id="dot3"></div>
+      </div>
+      <div class="wizard-step-title" id="wizardTitle"></div>
+      <div class="wizard-step-body" id="wizardBody"></div>
+      <div class="wizard-buttons" id="wizardButtons"></div>
+    </div>
+  </div>
+  <div class="container">
+    <h1>🎙️ 实时音频翻译</h1>
+    
+    <div class="section">
+      <div class="section-title">API Key</div>
+      <input type="text" id="appKey" placeholder="请输入 speech/new 控制台里的 API Key">
+      <div class="hint">API Key 会保存到 macOS Keychain，不再明文写入配置文件。</div>
+    </div>
+    
+    <div class="section">
+      <div class="section-title">Resource ID</div>
+      <input type="text" id="resourceId" value="volc.service_type.10053">
+    </div>
+    
+    <div class="section">
+      <div class="section-title">源语言</div>
+      <select id="sourceLanguage">
+        <option value="id">印尼语</option>
+        <option value="en">英语</option>
+        <option value="ja">日语</option>
+        <option value="ko">韩语</option>
+      </select>
+    </div>
+    
+    <div class="section">
+      <div class="section-title">目标语言</div>
+      <select id="targetLanguage">
+        <option value="zh">简体中文</option>
+        <option value="en">英语</option>
+      </select>
+    </div>
+
+    <div class="section">
+      <div class="section-title">音频来源</div>
+      <select id="audioSourceType">
+        <option value="input">音频输入设备（推荐：BlackHole）</option>
+        <option value="screen">屏幕/窗口共享音频（实验）</option>
+      </select>
+      <div class="hint">如果已把系统声音输出到 BlackHole，请在下方输入设备里选择 BlackHole。</div>
+    </div>
+
+    <div class="section" id="audioInputSection">
+      <div class="section-title">音频输入设备</div>
+      <select id="audioInputDevice">
+        <option value="">系统默认输入</option>
+      </select>
+      <div class="button-group" style="margin-top: 10px;">
+        <button class="btn-secondary" id="refreshDevicesBtn" type="button">刷新音频设备</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">音频环境检查</div>
+      <div class="env-box" id="audioEnvBox">正在检查 BlackHole 和系统输出...</div>
+      <div class="button-group" style="margin-top: 10px;">
+        <button class="btn-secondary" id="checkAudioEnvBtn" type="button">重新检查</button>
+        <button class="btn-secondary" id="restoreOutputBtn" type="button">恢复原输出</button>
+      </div>
+      <div class="button-group" style="margin-top: 10px;">
+        <button class="btn-secondary" id="openAudioMidiBtn" type="button">打开音频 MIDI 设置</button>
+        <button class="btn-secondary" id="openSoundSettingsBtn" type="button">打开声音输出设置</button>
+      </div>
+    </div>
+    
+    <div class="status status-idle" id="status">状态：未开始</div>
+    
+    <div class="button-group">
+      <button class="btn-primary" id="startBtn">▶️ 开始翻译</button>
+      <button class="btn-danger" id="stopBtn" disabled>⏹️ 停止翻译</button>
+    </div>
+
+    <div class="button-group">
+      <button class="btn-secondary" id="releaseAudioBtn" type="button">释放音频采集</button>
+    </div>
+    
+    <div class="button-group">
+      <button class="btn-secondary" id="toggleFloatBtn">👁️ 显示浮窗</button>
+    </div>
+    
+    <div class="log-box" id="logBox">
+      <div class="log-line">[系统] 应用已启动</div>
+    </div>
+  </div>
+
+  <script>
+    const { ipcRenderer } = require('electron');
+    
+    function log(message) {
+      const logBox = document.getElementById('logBox');
+      const time = new Date().toLocaleTimeString();
+      const line = document.createElement('div');
+      line.className = 'log-line';
+      line.textContent = `[${time}] ${message}`;
+      logBox.appendChild(line);
+      logBox.scrollTop = logBox.scrollHeight;
+      console.log(message);
+    }
+    
+    log('页面已加载');
+    
+    let audioStream = null;
+    let audioContext = null;
+    let audioSourceNode = null;
+    let audioProcessorNode = null;
+    let pcmSamples = [];
+    let isSessionStarted = false;
+    let ws = null;
+    let isTranslating = false;
+    let floatVisible = false;
+    let manualStopping = false;
+    let reconnectTimer = null;
+    let reconnectAttempts = 0;
+    let watchdogTimer = null;
+    let lastMessageAt = 0;
+    let currentConfig = null;
+    const MAX_RECONNECT_ATTEMPTS = 8;
+    const WATCHDOG_TIMEOUT_MS = 90000;
+
+    function maskKey(key) {
+      if (!key || key.length <= 12) {
+        return '***';
+      }
+      return `${key.slice(0, 6)}...${key.slice(-4)}`;
+    }
+    
+    const appKeyInput = document.getElementById('appKey');
+    const resourceIdInput = document.getElementById('resourceId');
+    const sourceLanguageSelect = document.getElementById('sourceLanguage');
+    const targetLanguageSelect = document.getElementById('targetLanguage');
+    const audioSourceTypeSelect = document.getElementById('audioSourceType');
+    const audioInputDeviceSelect = document.getElementById('audioInputDevice');
+    const audioInputSection = document.getElementById('audioInputSection');
+    const refreshDevicesBtn = document.getElementById('refreshDevicesBtn');
+    const audioEnvBox = document.getElementById('audioEnvBox');
+    const checkAudioEnvBtn = document.getElementById('checkAudioEnvBtn');
+    const restoreOutputBtn = document.getElementById('restoreOutputBtn');
+    const openAudioMidiBtn = document.getElementById('openAudioMidiBtn');
+    const openSoundSettingsBtn = document.getElementById('openSoundSettingsBtn');
+    const startBtn = document.getElementById('startBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const releaseAudioBtn = document.getElementById('releaseAudioBtn');
+    const toggleFloatBtn = document.getElementById('toggleFloatBtn');
+    const statusDiv = document.getElementById('status');
+    
+    function updateStatus(message, type = 'idle') {
+      statusDiv.textContent = message;
+      statusDiv.className = `status status-${type}`;
+    }
+
+    async function loadSavedConfig() {
+      try {
+        const config = await ipcRenderer.invoke('load-config');
+        if (config.appKey) appKeyInput.value = config.appKey;
+        if (config.resourceId) resourceIdInput.value = config.resourceId;
+        if (config.sourceLanguage) sourceLanguageSelect.value = config.sourceLanguage;
+        if (config.targetLanguage) targetLanguageSelect.value = config.targetLanguage;
+        log(config.appKey ? '已从 Keychain 加载 API Key' : '未检测到已保存的 API Key');
+      } catch (error) {
+        log(`加载配置失败: ${error.message || error}`);
+      }
+    }
+
+    async function saveCurrentConfig(config) {
+      await ipcRenderer.invoke('save-config', config);
+      log('配置已保存，API Key 已写入 Keychain');
+    }
+
+    async function checkAudioEnvironment() {
+      try {
+        const env = await ipcRenderer.invoke('get-audio-environment');
+        if (!env.supported) {
+          audioEnvBox.textContent = `音频环境检测不可用：${env.message || '未知原因'}`;
+          return;
+        }
+
+        const lines = [
+          `BlackHole: ${env.blackHoleFound ? `已检测到 (${env.blackHoleDevices.join(', ')})` : '未检测到'}`,
+          `当前默认输出: ${env.defaultOutputName || '未知'}`,
+          `是否多输出设备: ${env.isDefaultOutputMultiOutput ? '是' : '否'}`,
+          `启动前输出设备: ${env.originalOutputDeviceName || '未记录'}`,
+          `退出自动恢复: ${env.canAutoRestoreOutput ? '可用' : '需要安装 SwitchAudioSource'}`,
+          '',
+          '引导：',
+          ...(env.guide || [])
+        ];
+        audioEnvBox.textContent = lines.join('\n');
+      } catch (error) {
+        audioEnvBox.textContent = `音频环境检查失败：${error.message || error}`;
+      }
+    }
+
+    async function restoreOriginalOutput() {
+      try {
+        const result = await ipcRenderer.invoke('restore-original-output');
+        if (result.ok) {
+          log(`已恢复输出设备: ${result.outputDeviceName}`);
+        } else {
+          log(`无法自动恢复输出设备: ${result.message}`);
+          alert(result.message);
+        }
+        checkAudioEnvironment();
+      } catch (error) {
+        log(`恢复输出设备失败: ${error.message || error}`);
+      }
+    }
+
+    async function openAudioMidiSetup() {
+      const result = await ipcRenderer.invoke('open-audio-midi-setup');
+      if (!result.ok) {
+        log(`打开音频 MIDI 设置失败: ${result.message || '未知错误'}`);
+      }
+    }
+
+    async function openSoundSettings() {
+      try {
+        await ipcRenderer.invoke('open-sound-settings');
+      } catch (error) {
+        log(`打开声音输出设置失败: ${error.message || error}`);
+      }
+    }
+
+    function updateAudioInputVisibility() {
+      audioInputSection.style.display = audioSourceTypeSelect.value === 'input' ? 'block' : 'none';
+    }
+
+    async function loadAudioInputDevices(requestPermission = false) {
+      try {
+        let permissionStream = null;
+        if (requestPermission) {
+          permissionStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        }
+
+        const currentValue = audioInputDeviceSelect.value;
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const audioInputs = devices.filter(device => device.kind === 'audioinput');
+        audioInputDeviceSelect.innerHTML = '<option value="">系统默认输入</option>';
+
+        for (const device of audioInputs) {
+          const option = document.createElement('option');
+          option.value = device.deviceId;
+          option.textContent = device.label || `音频输入 ${audioInputDeviceSelect.length}`;
+          audioInputDeviceSelect.appendChild(option);
+        }
+
+        const blackHoleDevice = audioInputs.find(device => /blackhole/i.test(device.label || ''));
+        if (currentValue && audioInputs.some(device => device.deviceId === currentValue)) {
+          audioInputDeviceSelect.value = currentValue;
+        } else if (blackHoleDevice) {
+          audioInputDeviceSelect.value = blackHoleDevice.deviceId;
+          log(`已自动选择 BlackHole 输入设备: ${blackHoleDevice.label}`);
+        }
+
+        if (permissionStream) {
+          permissionStream.getTracks().forEach(track => track.stop());
+        }
+      } catch (error) {
+        log(`加载音频输入设备失败: ${error.message || error}`);
+      }
+    }
+    
+    function generateSessionId() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        const r = Math.random() * 16 | 0;
+        const v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
+
+    ipcRenderer.on('doubao-log', (event, message) => {
+      log(message);
+    });
+
+    ipcRenderer.on('doubao-message', (event, data) => {
+      log('收到消息');
+      try {
+        const response = JSON.parse(data);
+        lastMessageAt = Date.now();
+        log(`消息事件: ${response.event}`);
+        
+        let subtitleText = '';
+        let sourceText = '';
+        let subtitleEvent = response.event;
+        
+        switch (response.event) {
+          case 150:
+            log('会话已开始');
+            isSessionStarted = true;
+            reconnectAttempts = 0;
+            updateStatus('会话已开始', 'translating');
+            break;
+          case 651:
+          case 652:
+            sourceText = response.text || '';
+            break;
+          case 654:
+          case 655:
+            subtitleText = response.text || '';
+            log(`翻译结果: ${subtitleText}`);
+            break;
+          case 152:
+            log('会话已结束');
+            if (isTranslating && !manualStopping) {
+              scheduleReconnect('服务端结束会话');
+            }
+            break;
+          case 153:
+            const responseMeta = response.response_meta || response.responseMeta || {};
+            const responseData = response.data ? base64ToUtf8(response.data) : '';
+            const statusCode = responseMeta.statusCode || responseMeta.StatusCode;
+            const errorMessage = responseMeta.message || responseMeta.Message || responseData || `未知错误${statusCode ? `，状态码: ${statusCode}` : ''}`;
+            log(`会话失败: ${errorMessage}`);
+            if (isTranslating && !manualStopping && shouldRetrySession(errorMessage, statusCode)) {
+              scheduleReconnect(`会话失败: ${errorMessage}`);
+            } else {
+              updateStatus('会话失败: ' + errorMessage, 'error');
+              stopTranslation();
+            }
+            break;
+        }
+        
+        if (subtitleText || sourceText) {
+          ipcRenderer.invoke('send-subtitle', {
+            event: subtitleEvent,
+            source: sourceText,
+            translation: subtitleText
+          });
+        }
+      } catch (e) {
+        log(`解析消息失败: ${e}`);
+      }
+    });
+
+    ipcRenderer.on('doubao-error', (event, message) => {
+      log(`WebSocket 错误: ${message}`);
+      if (isTranslating && !manualStopping) {
+        scheduleReconnect(`连接错误: ${message}`);
+      } else {
+        updateStatus('连接错误', 'error');
+        stopTranslation();
+      }
+    });
+
+    ipcRenderer.on('doubao-close', (event, info) => {
+      log(`WebSocket 已关闭: ${info.code} ${info.reason || ''}`);
+      if (isTranslating && !manualStopping) {
+        scheduleReconnect(`连接已断开: ${info.code} ${info.reason || ''}`);
+      }
+    });
+    
+    async function startTranslation() {
+      log('=== 开始翻译 ===');
+      
+      if (!appKeyInput.value) {
+        log('错误：缺少 API Key');
+        alert('请先填写 API Key！');
+        return;
+      }
+
+      try {
+        updateStatus('正在启动...', 'translating');
+        startBtn.disabled = true;
+        manualStopping = false;
+        reconnectAttempts = 0;
+        
+        const config = {
+          appKey: appKeyInput.value.trim(),
+          resourceId: resourceIdInput.value,
+          sourceLanguage: sourceLanguageSelect.value,
+          targetLanguage: targetLanguageSelect.value
+        };
+        
+        if (config.appKey.startsWith('ark-')) {
+          log('警告：当前填写的是 ark API Key，请改用 speech/new 控制台里的语音 API Key');
+        }
+        
+        log(`配置: ${JSON.stringify({ ...config, appKey: maskKey(config.appKey) })}`);
+        await saveCurrentConfig(config);
+        currentConfig = config;
+        
+        log('正在请求音频权限...');
+        audioStream = await getAudioStream();
+        log('音频权限已获取');
+        
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        log('AudioContext 已创建');
+        
+        isTranslating = true;
+        await connectAndStartSession(config, false);
+        startPcmStreaming();
+        log('启动 PCM 音频流...');
+        updateStatus('正在翻译...', 'translating');
+        stopBtn.disabled = false;
+        startWatchdog();
+
+        if (!floatVisible) {
+          toggleFloat();
+        }
+        
+      } catch (error) {
+        log(`启动失败: ${error}`);
+        manualStopping = true;
+        isTranslating = false;
+        isSessionStarted = false;
+        clearReconnectTimer();
+        stopWatchdog();
+        releaseAudioCapture();
+        ipcRenderer.invoke('doubao-disconnect').catch(() => {});
+        currentConfig = null;
+        updateStatus('启动失败: ' + error.message, 'error');
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+        alert('启动失败: ' + error.message);
+      }
+    }
+
+    async function connectAndStartSession(config, isReconnect) {
+      isSessionStarted = false;
+      lastMessageAt = Date.now();
+      const sessionId = generateSessionId();
+      log(`${isReconnect ? '重建' : '创建'}会话 ID: ${sessionId}`);
+
+      updateStatus(isReconnect ? '正在自动重连...' : '正在连接服务器...', 'translating');
+      log('正在通过主进程连接 WebSocket...');
+      await ipcRenderer.invoke('doubao-connect', config);
+      log('WebSocket 已连接');
+      updateStatus('连接成功，正在初始化...', 'translating');
+
+      const startRequest = {
+        request_meta: {
+          session_id: sessionId
+        },
+        event: 100,
+        user: {
+          uid: 'desktop-' + Date.now(),
+          did: 'desktop',
+          platform: 'Electron Desktop',
+          sdk_version: '1.0.0'
+        },
+        request: {
+          mode: 's2t',
+          speech_rate: 0,
+          source_language: config.sourceLanguage,
+          target_language: config.targetLanguage,
+          corpus: {}
+        },
+        source_audio: {
+          format: 'wav',
+          codec: 'raw',
+          rate: 16000,
+          bits: 16,
+          channel: 1
+        }
+      };
+
+      log('发送开始会话请求');
+      await ipcRenderer.invoke('doubao-send', startRequest);
+    }
+
+    async function getAudioStream() {
+      if (audioSourceTypeSelect.value === 'input') {
+        const selectedDevice = audioInputDeviceSelect.selectedOptions[0]?.textContent || '系统默认输入';
+        log(`音频来源：音频输入设备 - ${selectedDevice}`);
+        const audioConstraints = {
+          echoCancellation: false,
+          noiseSuppression: false,
+          autoGainControl: false
+        };
+
+        if (audioInputDeviceSelect.value) {
+          audioConstraints.deviceId = { exact: audioInputDeviceSelect.value };
+        }
+
+        return await navigator.mediaDevices.getUserMedia({
+          audio: audioConstraints
+        });
+      }
+
+      log('音频来源：电脑/窗口音频，请在弹窗中选择正在播放视频的屏幕或 Chrome 窗口，并勾选共享音频（如有）');
+      const stream = await navigator.mediaDevices.getDisplayMedia({
+        video: true,
+        audio: {
+          echoCancellation: false,
+          noiseSuppression: false,
+          autoGainControl: false
+        }
+      });
+
+      if (stream.getAudioTracks().length === 0) {
+        stream.getTracks().forEach(track => track.stop());
+        throw new Error('未获取到电脑/窗口音频。请重新选择共享源，并确认选择了“共享音频”；macOS 可能需要给应用屏幕录制权限。');
+      }
+
+      return stream;
+    }
+    
+    function startPcmStreaming() {
+      const inputSampleRate = audioContext.sampleRate;
+      audioSourceNode = audioContext.createMediaStreamSource(audioStream);
+      audioProcessorNode = audioContext.createScriptProcessor(4096, 1, 1);
+      pcmSamples = [];
+
+      audioProcessorNode.onaudioprocess = (event) => {
+        if (!isTranslating || !isSessionStarted) {
+          return;
+        }
+
+        const input = event.inputBuffer.getChannelData(0);
+        const output = event.outputBuffer.getChannelData(0);
+        output.fill(0);
+
+        const resampled = resampleTo16k(input, inputSampleRate);
+        pcmSamples.push(...resampled);
+
+        if (pcmSamples.length >= 3200) {
+          const chunk = pcmSamples.splice(0, 3200);
+          const pcm16 = floatTo16BitPCM(chunk);
+          const audioRequest = {
+            event: 200,
+            source_audio: {
+              data: arrayBufferToBase64(pcm16.buffer)
+            }
+          };
+
+          ipcRenderer.invoke('doubao-send', audioRequest)
+            .catch(e => log(`发送音频失败: ${e.message || e}`));
+        }
+      }
+
+      audioSourceNode.connect(audioProcessorNode);
+      audioProcessorNode.connect(audioContext.destination);
+    }
+
+    function resampleTo16k(input, inputSampleRate) {
+      if (inputSampleRate === 16000) {
+        return Array.from(input);
+      }
+
+      const ratio = inputSampleRate / 16000;
+      const outputLength = Math.floor(input.length / ratio);
+      const output = new Array(outputLength);
+
+      for (let i = 0; i < outputLength; i++) {
+        const sourceIndex = i * ratio;
+        const index = Math.floor(sourceIndex);
+        const nextIndex = Math.min(index + 1, input.length - 1);
+        const fraction = sourceIndex - index;
+        output[i] = input[index] + (input[nextIndex] - input[index]) * fraction;
+      }
+
+      return output;
+    }
+
+    function floatTo16BitPCM(input) {
+      const output = new Int16Array(input.length);
+      for (let i = 0; i < input.length; i++) {
+        const s = Math.max(-1, Math.min(1, input[i]));
+        output[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+      }
+      return output;
+    }
+    
+    function arrayBufferToBase64(buffer) {
+      let binary = '';
+      const bytes = new Uint8Array(buffer);
+      const len = bytes.byteLength;
+      for (let i = 0; i < len; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      return btoa(binary);
+    }
+
+    function base64ToUtf8(base64) {
+      try {
+        const binary = atob(base64);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) {
+          bytes[i] = binary.charCodeAt(i);
+        }
+        return new TextDecoder().decode(bytes);
+      } catch (e) {
+        return '';
+      }
+    }
+
+    function shouldRetrySession(errorMessage, statusCode) {
+      const text = `${errorMessage || ''} ${statusCode || ''}`.toLowerCase();
+      if (text.includes('invalid') || text.includes('api key') || text.includes('unauthorized') || text.includes('45000001')) {
+        return false;
+      }
+      return true;
+    }
+
+    function scheduleReconnect(reason) {
+      if (!isTranslating || manualStopping || !currentConfig) {
+        return;
+      }
+
+      if (reconnectTimer) {
+        return;
+      }
+
+      if (reconnectAttempts >= MAX_RECONNECT_ATTEMPTS) {
+        log(`自动重连已达上限，停止翻译。最后原因: ${reason}`);
+        updateStatus('连接不稳定，已停止', 'error');
+        stopTranslation();
+        return;
+      }
+
+      reconnectAttempts += 1;
+      isSessionStarted = false;
+      const delay = Math.min(30000, 1000 * Math.pow(2, reconnectAttempts - 1));
+      log(`准备自动重连 (${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS})，${Math.round(delay / 1000)} 秒后重试。原因: ${reason}`);
+      updateStatus(`正在等待自动重连 ${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS}`, 'translating');
+
+      ipcRenderer.invoke('doubao-disconnect').catch(() => {});
+      reconnectTimer = setTimeout(async () => {
+        reconnectTimer = null;
+        if (!isTranslating || manualStopping || !currentConfig) {
+          return;
+        }
+
+        try {
+          await connectAndStartSession(currentConfig, true);
+        } catch (error) {
+          log(`自动重连失败: ${error.message || error}`);
+          scheduleReconnect(`自动重连失败: ${error.message || error}`);
+        }
+      }, delay);
+    }
+
+    function startWatchdog() {
+      stopWatchdog();
+      watchdogTimer = setInterval(() => {
+        if (!isTranslating || manualStopping || !isSessionStarted) {
+          return;
+        }
+
+        const idleMs = Date.now() - lastMessageAt;
+        if (idleMs > WATCHDOG_TIMEOUT_MS) {
+          log(`超过 ${Math.round(WATCHDOG_TIMEOUT_MS / 1000)} 秒未收到服务端事件，触发会话重建`);
+          scheduleReconnect('长时间无服务端事件');
+        }
+      }, 15000);
+    }
+
+    function stopWatchdog() {
+      if (watchdogTimer) {
+        clearInterval(watchdogTimer);
+        watchdogTimer = null;
+      }
+    }
+
+    function clearReconnectTimer() {
+      if (reconnectTimer) {
+        clearTimeout(reconnectTimer);
+        reconnectTimer = null;
+      }
+    }
+
+    function releaseAudioCapture() {
+      log('强制释放音频采集');
+      if (audioProcessorNode) {
+        audioProcessorNode.disconnect();
+        audioProcessorNode.onaudioprocess = null;
+        audioProcessorNode = null;
+      }
+
+      if (audioSourceNode) {
+        audioSourceNode.disconnect();
+        audioSourceNode = null;
+      }
+
+      if (audioStream) {
+        audioStream.getTracks().forEach(track => track.stop());
+        audioStream = null;
+      }
+
+      if (audioContext) {
+        audioContext.close();
+        audioContext = null;
+      }
+    }
+    
+    function stopTranslation() {
+      log('=== 停止翻译 ===');
+      manualStopping = true;
+      isTranslating = false;
+      isSessionStarted = false;
+      clearReconnectTimer();
+      stopWatchdog();
+      
+      pcmSamples = [];
+      releaseAudioCapture();
+      
+      ipcRenderer.invoke('doubao-send', { event: 102 }).catch(() => {});
+      ipcRenderer.invoke('doubao-disconnect').catch(() => {});
+      ws = null;
+      currentConfig = null;
+      
+      startBtn.disabled = false;
+      stopBtn.disabled = true;
+      updateStatus('已停止', 'idle');
+      
+      // Keep subtitle history in the floating window; users can clear it there.
+    }
+    
+    function toggleFloat() {
+      floatVisible = !floatVisible;
+      if (floatVisible) {
+        ipcRenderer.invoke('show-floating');
+        toggleFloatBtn.textContent = '👁️ 隐藏浮窗';
+      } else {
+        ipcRenderer.invoke('hide-floating');
+        toggleFloatBtn.textContent = '👁️ 显示浮窗';
+      }
+    }
+    
+    // --- Onboarding Wizard ---
+    let wizardStep = 0;
+    let wizardAudioEnv = null;
+
+    async function checkOnboarding() {
+      const complete = await ipcRenderer.invoke('is-onboarding-complete');
+      if (!complete) {
+        showWizard();
+      }
+    }
+
+    function showWizard() {
+      document.getElementById('wizardOverlay').classList.remove('hidden');
+      wizardStep = 0;
+      renderWizardStep();
+    }
+
+    function hideWizard() {
+      document.getElementById('wizardOverlay').classList.add('hidden');
+    }
+
+    async function completeOnboarding() {
+      await ipcRenderer.invoke('complete-onboarding');
+      hideWizard();
+    }
+
+    function setWizardDots(step) {
+      for (let i = 1; i <= 3; i++) {
+        const dot = document.getElementById('dot' + i);
+        dot.className = 'wizard-step-dot';
+        if (i < step) dot.classList.add('done');
+        if (i === step) dot.classList.add('active');
+      }
+    }
+
+    async function renderWizardStep() {
+      setWizardDots(wizardStep);
+      const title = document.getElementById('wizardTitle');
+      const body = document.getElementById('wizardBody');
+      const buttons = document.getElementById('wizardButtons');
+
+      switch (wizardStep) {
+        case 0: await renderAudioStep(title, body, buttons); break;
+        case 1: renderApiKeyStep(title, body, buttons); break;
+        case 2: await renderTestStep(title, body, buttons); break;
+      }
+    }
+
+    async function renderAudioStep(title, body, buttons) {
+      title.textContent = '第一步：设置音频环境';
+
+      try {
+        wizardAudioEnv = await ipcRenderer.invoke('get-audio-environment');
+      } catch (e) {
+        wizardAudioEnv = { supported: false, message: e.message };
+      }
+
+      let html = '';
+
+      const bhOk = wizardAudioEnv.blackHoleFound;
+      html += '<div class="check-item">' +
+        '<span class="check-icon ' + (bhOk ? 'ok' : 'warn') + '">' + (bhOk ? '✓' : '⚠') + '</span>' +
+        '<span>' + (bhOk ? 'BlackHole 已安装' : '未检测到 BlackHole') + '</span>' +
+        (!bhOk ? '<span class="fix-link" id="fixBlackHole">安装教程</span>' : '') +
+        '</div>';
+
+      const moOk = wizardAudioEnv.isDefaultOutputMultiOutput;
+      html += '<div class="check-item">' +
+        '<span class="check-icon ' + (moOk ? 'ok' : 'warn') + '">' + (moOk ? '✓' : '⚠') + '</span>' +
+        '<span>' + (moOk ? '系统输出已设为多输出设备' : '当前输出不是多输出设备') + '</span>' +
+        (!moOk ? '<span class="fix-link" id="fixMultiOutput">打开音频 MIDI 设置</span>' : '') +
+        '</div>';
+
+      const swOk = wizardAudioEnv.canAutoRestoreOutput;
+      html += '<div class="check-item">' +
+        '<span class="check-icon ' + (swOk ? 'ok' : 'warn') + '">' + (swOk ? '✓' : '⚠') + '</span>' +
+        '<span>' + (swOk ? 'SwitchAudioSource 已安装' : '未安装 SwitchAudioSource（退出时自动恢复输出）') + '</span>' +
+        '</div>';
+
+      if (!bhOk || !moOk) {
+        html += '<div class="guide-text">' +
+          '<strong>为什么需要这些？</strong><br>' +
+          'BlackHole 是一个虚拟音频驱动，能把电脑播放的声音"抓取"给翻译引擎。<br>' +
+          '多输出设备让你同时听到声音和翻译。安装 BlackHole 后在音频 MIDI 设置中创建多输出设备即可。' +
+          '</div>';
+      }
+
+      body.innerHTML = html;
+
+      const fixBh = document.getElementById('fixBlackHole');
+      if (fixBh) {
+        fixBh.addEventListener('click', () => {
+          require('electron').shell.openExternal('https://github.com/ExistentialAudio/BlackHole');
+        });
+      }
+
+      const fixMo = document.getElementById('fixMultiOutput');
+      if (fixMo) {
+        fixMo.addEventListener('click', async () => {
+          await ipcRenderer.invoke('open-audio-midi-setup');
+          setTimeout(async () => {
+            wizardAudioEnv = await ipcRenderer.invoke('get-audio-environment');
+            await renderAudioStep(title, body, buttons);
+          }, 3000);
+        });
+      }
+
+      const allGood = bhOk && moOk;
+      buttons.innerHTML = '<button class="btn-primary" id="wizardNext1">' +
+        (allGood ? '下一步' : '跳过，稍后设置') + '</button>';
+      document.getElementById('wizardNext1').addEventListener('click', () => {
+        wizardStep = 1;
+        renderWizardStep();
+      });
+    }
+
+    function renderApiKeyStep(title, body, buttons) {
+      title.textContent = '第二步：配置 API Key';
+
+      body.innerHTML =
+        '<div style="margin-bottom: 16px;">' +
+        '<label style="font-size: 14px; font-weight: 600; display: block; margin-bottom: 6px;">API Key</label>' +
+        '<input type="text" id="wizardApiKey" placeholder="粘贴火山引擎语音 API Key" style="width: 100%; box-sizing: border-box;">' +
+        '<div class="hint" style="margin-top: 6px;">' +
+        '前往 <a href="#" id="wizardConsoleLink" style="color: #667eea;">火山引擎语音控制台</a> 获取 API Key（需先开通实时语音翻译服务）' +
+        '</div></div>' +
+        '<div style="margin-bottom: 16px;">' +
+        '<label style="font-size: 14px; font-weight: 600; display: block; margin-bottom: 6px;">Resource ID</label>' +
+        '<input type="text" id="wizardResourceId" value="volc.service_type.10053" style="width: 100%; box-sizing: border-box;">' +
+        '</div>' +
+        '<div id="wizardApiError" style="color: #e74c3c; font-size: 13px; margin-top: 8px; display: none;"></div>';
+
+      document.getElementById('wizardConsoleLink').addEventListener('click', (e) => {
+        e.preventDefault();
+        require('electron').shell.openExternal('https://console.volcengine.com/speech/service/8');
+      });
+
+      buttons.innerHTML =
+        '<button class="btn-secondary" id="wizardBack2">上一步</button>' +
+        '<button class="btn-primary" id="wizardNext2">保存并继续</button>';
+
+      document.getElementById('wizardBack2').addEventListener('click', () => {
+        wizardStep = 0;
+        renderWizardStep();
+      });
+
+      document.getElementById('wizardNext2').addEventListener('click', async () => {
+        const apiKey = document.getElementById('wizardApiKey').value.trim();
+        const resourceId = document.getElementById('wizardResourceId').value.trim();
+
+        if (!apiKey) {
+          document.getElementById('wizardApiError').textContent = '请填写 API Key';
+          document.getElementById('wizardApiError').style.display = 'block';
+          return;
+        }
+
+        await ipcRenderer.invoke('save-config', {
+          appKey: apiKey,
+          resourceId: resourceId,
+          sourceLanguage: 'id',
+          targetLanguage: 'zh'
+        });
+
+        appKeyInput.value = apiKey;
+        resourceIdInput.value = resourceId;
+
+        wizardStep = 2;
+        renderWizardStep();
+      });
+    }
+
+    async function renderTestStep(title, body, buttons) {
+      title.textContent = '第三步：快速测试';
+
+      body.innerHTML =
+        '<div class="test-result" id="testResult">' +
+        '<div class="icon">🎤</div>' +
+        '<div style="font-size: 15px; margin-bottom: 12px;">点击"开始测试"确认音频和翻译是否工作正常</div>' +
+        '<div style="font-size: 13px; color: #777;">请确保正在播放一段印尼语音频/视频</div>' +
+        '<div id="testStatus" style="margin-top: 12px; color: #667eea; display: none;">测试中...</div>' +
+        '</div>';
+
+      buttons.innerHTML =
+        '<button class="btn-secondary" id="wizardBack3">上一步</button>' +
+        '<button class="btn-primary" id="wizardTest">开始测试</button>' +
+        '<button class="btn-primary hidden" id="wizardDone">完成设置</button>';
+
+      document.getElementById('wizardBack3').addEventListener('click', () => {
+        wizardStep = 1;
+        renderWizardStep();
+      });
+
+      document.getElementById('wizardTest').addEventListener('click', async () => {
+        const testBtn = document.getElementById('wizardTest');
+        const testStatus = document.getElementById('testStatus');
+        const testResult = document.getElementById('testResult');
+
+        testBtn.disabled = true;
+        testStatus.style.display = 'block';
+        testStatus.textContent = '正在连接翻译服务...';
+
+        // Pre-fill config from wizard inputs or main form for the test
+        if (!appKeyInput.value) {
+          const saved = await ipcRenderer.invoke('load-config');
+          if (saved.appKey) appKeyInput.value = saved.appKey;
+          if (saved.resourceId) resourceIdInput.value = saved.resourceId;
+        }
+
+        if (!appKeyInput.value) {
+          testResult.className = 'test-result fail';
+          testResult.innerHTML =
+            '<div class="icon">❌</div>' +
+            '<div style="font-size: 15px; margin-bottom: 8px;">未配置 API Key</div>' +
+            '<div style="font-size: 13px; color: #e74c3c;">请返回上一步填写 API Key</div>';
+          testBtn.textContent = '重新测试';
+          testBtn.disabled = false;
+          testStatus.style.display = 'none';
+          return;
+        }
+
+        try {
+          await startTranslation();
+          testStatus.textContent = '正在翻译，请说话或播放音频...';
+
+          await new Promise(resolve => setTimeout(resolve, 5000));
+
+          stopTranslation();
+
+          testResult.className = 'test-result success';
+          testResult.innerHTML =
+            '<div class="icon">✅</div>' +
+            '<div style="font-size: 15px; margin-bottom: 8px;">测试完成</div>' +
+            '<div style="font-size: 13px; color: #777;">如果字幕浮窗中出现翻译文字，说明一切正常！<br>没有翻译？尝试播放一段印尼语音频再测试一次。</div>';
+          testBtn.classList.add('hidden');
+          document.getElementById('wizardDone').classList.remove('hidden');
+        } catch (e) {
+          testResult.className = 'test-result fail';
+          testResult.innerHTML =
+            '<div class="icon">❌</div>' +
+            '<div style="font-size: 15px; margin-bottom: 8px;">测试失败</div>' +
+            '<div style="font-size: 13px; color: #e74c3c;">' + (e.message || '未知错误') + '</div>';
+          testBtn.textContent = '重新测试';
+          testBtn.disabled = false;
+        }
+
+        testStatus.style.display = 'none';
+      });
+
+      document.getElementById('wizardDone').addEventListener('click', async () => {
+        await completeOnboarding();
+      });
+    }
+
+    startBtn.addEventListener('click', () => {
+      log('点击开始按钮');
+      startTranslation();
+    });
+    stopBtn.addEventListener('click', () => {
+      log('点击停止按钮');
+      stopTranslation();
+    });
+    releaseAudioBtn.addEventListener('click', () => {
+      log('点击释放音频采集按钮');
+      if (isTranslating) {
+        stopTranslation();
+      } else {
+        releaseAudioCapture();
+        updateStatus('音频采集已释放', 'idle');
+      }
+    });
+    toggleFloatBtn.addEventListener('click', () => {
+      log('点击切换浮窗按钮');
+      toggleFloat();
+    });
+
+    audioSourceTypeSelect.addEventListener('change', () => {
+      updateAudioInputVisibility();
+    });
+
+    refreshDevicesBtn.addEventListener('click', () => {
+      log('刷新音频输入设备');
+      loadAudioInputDevices(true);
+    });
+
+    checkAudioEnvBtn.addEventListener('click', () => {
+      log('重新检查音频环境');
+      checkAudioEnvironment();
+    });
+
+    restoreOutputBtn.addEventListener('click', () => {
+      log('尝试恢复启动前输出设备');
+      restoreOriginalOutput();
+    });
+
+    openAudioMidiBtn.addEventListener('click', () => {
+      log('打开音频 MIDI 设置，请在左下角 + 创建/检查多输出设备');
+      openAudioMidiSetup();
+    });
+
+    openSoundSettingsBtn.addEventListener('click', () => {
+      log('打开声音输出设置，请选择多输出设备');
+      openSoundSettings();
+    });
+
+    navigator.mediaDevices?.addEventListener?.('devicechange', () => {
+      loadAudioInputDevices(false);
+    });
+    
+    loadSavedConfig();
+    updateAudioInputVisibility();
+    loadAudioInputDevices(false);
+    checkAudioEnvironment();
+    log('事件已绑定');
+    checkOnboarding();
+  </script>
+</body>
+</html>

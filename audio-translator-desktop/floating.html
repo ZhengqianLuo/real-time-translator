@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>字幕浮窗</title>
+  <style>
+    :root {
+      --subtitle-font-size: 22px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: rgba(0, 0, 0, 0.85);
+      border-radius: 12px;
+      padding: 16px 18px 18px;
+      height: 100vh;
+      overflow: hidden;
+      -webkit-app-region: no-drag;
+    }
+    
+    .container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      gap: 10px;
+      -webkit-app-region: drag;
+    }
+    
+    .title {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 12px;
+      flex: 1;
+    }
+    
+    .controls {
+      display: flex;
+      gap: 6px;
+      -webkit-app-region: no-drag;
+    }
+
+    .control-btn,
+    .close-btn {
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 14px;
+      cursor: pointer;
+      -webkit-app-region: no-drag;
+      padding: 5px;
+      transition: color 0.2s;
+    }
+
+    .close-btn {
+      font-size: 18px;
+    }
+    
+    .control-btn:hover,
+    .close-btn:hover {
+      color: #ff4757;
+    }
+    
+    .subtitle-list {
+      flex: 1;
+      color: white;
+      font-weight: 500;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+      -webkit-app-region: no-drag;
+      overflow-y: auto;
+      padding: 4px 8px 0 0;
+      scroll-behavior: smooth;
+    }
+
+    .subtitle-list::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .subtitle-list::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.25);
+      border-radius: 999px;
+    }
+
+    .subtitle-article {
+      padding: 10px 4px 28px;
+      color: #00d4ff;
+      font-size: var(--subtitle-font-size, 24px);
+      line-height: 1.72;
+      letter-spacing: 0.02em;
+      overflow-wrap: normal;
+      word-break: normal;
+      line-break: loose;
+      white-space: pre-wrap;
+    }
+
+    .subtitle-segment {
+      display: inline;
+    }
+
+    .subtitle-segment::after {
+      content: " ";
+    }
+
+    .subtitle-current {
+      color: #7ee8ff;
+      opacity: 0.9;
+    }
+    
+    .placeholder {
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="title">实时字幕（拖动边缘可调整大小）</div>
+      <div class="controls">
+        <button class="control-btn" id="fontDownBtn">A-</button>
+        <button class="control-btn" id="fontUpBtn">A+</button>
+        <button class="control-btn" id="clearBtn">清空</button>
+        <button class="close-btn" id="closeBtn">×</button>
+      </div>
+    </div>
+    <div class="subtitle-list" id="subtitleList">
+      <div class="placeholder">等待翻译开始...</div>
+    </div>
+  </div>
+  
+  <script src="floating.js"></script>
+</body>
+</html>
