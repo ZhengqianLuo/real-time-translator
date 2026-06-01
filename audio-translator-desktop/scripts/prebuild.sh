@@ -6,13 +6,24 @@ cd "$SCRIPT_DIR"
 
 echo "=== Prebuild: bundling audio tools ==="
 
-# 1. Compile Swift aggregate device helper
-echo "[1/3] Compiling create-aggregate-device..."
+# 1. Download BlackHole 2ch driver if not present
+echo "[1/3] Checking BlackHole 2ch driver..."
+BH_PKG="$SCRIPT_DIR/blackhole-2ch.pkg"
+if [ -f "$BH_PKG" ] && [ "$(wc -c < "$BH_PKG")" -gt 1000 ]; then
+  echo "  -> blackhole-2ch.pkg already present ($(wc -c < "$BH_PKG") bytes)"
+else
+  echo "  -> Downloading BlackHole 2ch v0.6.1..."
+  curl -L -o "$BH_PKG" "https://existential.audio/downloads/BlackHole2ch-0.6.1.pkg"
+  echo "  -> Downloaded ($(wc -c < "$BH_PKG") bytes)"
+fi
+
+# 2. Compile Swift aggregate device helper
+echo "[2/3] Compiling create-aggregate-device..."
 swiftc -o "$SCRIPT_DIR/create-aggregate-device" "$SCRIPT_DIR/create-aggregate-device.swift"
 echo "  -> create-aggregate-device compiled"
 
-# 2. Get SwitchAudioSource binary
-echo "[2/3] Getting SwitchAudioSource..."
+# 3. Get SwitchAudioSource binary
+echo "[3/3] Getting SwitchAudioSource..."
 if [ -f "$SCRIPT_DIR/SwitchAudioSource" ]; then
   echo "  -> SwitchAudioSource already present, skipping"
 elif command -v SwitchAudioSource &>/dev/null; then
@@ -45,19 +56,6 @@ else
   echo "  -> SwitchAudioSource downloaded"
 fi
 chmod +x "$SCRIPT_DIR/SwitchAudioSource"
-
-# 3. Download BlackHole .pkg
-echo "[3/3] Getting BlackHole .pkg..."
-BH_PKG="$SCRIPT_DIR/blackhole-2ch.pkg"
-if [ -f "$BH_PKG" ]; then
-  echo "  -> BlackHole .pkg already present, skipping"
-else
-  BH_VERSION="0.6.1"
-  BH_URL="https://github.com/ExistentialAudio/BlackHole/releases/download/v${BH_VERSION}/BlackHole-2ch-${BH_VERSION}.pkg"
-  echo "  -> Downloading from $BH_URL ..."
-  curl -L -o "$BH_PKG" "$BH_URL"
-  echo "  -> BlackHole .pkg downloaded"
-fi
 
 echo "=== Prebuild complete ==="
 echo ""

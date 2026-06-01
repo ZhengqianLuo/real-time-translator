@@ -112,7 +112,13 @@ let blackholeUID = getDeviceUID(blackhole)
 let targetDevice: AudioDeviceID
 if args.count >= 2 {
     let targetName = args[1]
-    guard let found = (getAllAudioDevices().first { getDeviceName($0) == targetName || getDeviceName($0).lowercased() == targetName.lowercased() }) else {
+    // Find by name, preferring the output variant (uid ending in :output).
+    // Bluetooth devices appear twice with same name — once as input (:input), once as output (:output).
+    let matches = getAllAudioDevices().filter {
+        getDeviceName($0) == targetName || getDeviceName($0).lowercased() == targetName.lowercased()
+    }
+    let outputMatch = matches.first { getDeviceUID($0).hasSuffix(":output") }
+    guard let found = outputMatch ?? matches.first else {
         print("ERROR: Output device not found: \(targetName)")
         exit(1)
     }
@@ -146,37 +152,28 @@ if let existing = existingAggregateWithBlackHole() {
 let safeName = targetName.replacingOccurrences(of: " ", with: "-")
     .replacingOccurrences(of: "'", with: "")
     .replacingOccurrences(of: "\"", with: "")
-let deviceUIDStr = "com.realtime-translator.aggregate.\(safeName)"
+let deviceUIDStr = "com.realtime-translator.aggregate.v2.\(safeName)"
 if let existingByUID = (getAllAudioDevices().first { getDeviceUID($0) == deviceUIDStr }) {
     let name = getDeviceName(existingByUID)
     print("OK:\(existingByUID):already_exists:\(name)")
     exit(0)
 }
 
-// Create a new multi-output aggregate device
+// Create a new multi-output aggregate device matching Audio MIDI Setup.
+// Critical: set kAudioAggregateDeviceMainSubDeviceKey to the physical output
+// so the aggregate uses its clock (e.g. 44100 Hz for Bluetooth), not BlackHole's 48000 Hz.
 let deviceName = "RealTime Translator (\(targetName))" as CFString
 let deviceUID = deviceUIDStr as CFString
-let stackedKey = kAudioAggregateDeviceIsStackedKey as CFString
-let subDeviceListKey = kAudioAggregateDeviceSubDeviceListKey as CFString
-let subDeviceUIDKey = kAudioSubDeviceUIDKey as CFString
-let subDeviceDriftKey = kAudioSubDeviceDriftCompensationKey as CFString
-let nameKey = kAudioAggregateDeviceNameKey as CFString
-let uidKey = kAudioAggregateDeviceUIDKey as CFString
-
-// Enable drift compensation on both sub-devices (critical for Bluetooth/USB)
-let driftOn = CFNumberCreate(kCFAllocatorDefault, .intType, [1])!
-let subDeviceDicts: [[CFString: Any]] = [
-    [subDeviceUIDKey: targetUID as CFString, subDeviceDriftKey: driftOn],
-    [subDeviceUIDKey: blackholeUID as CFString, subDeviceDriftKey: driftOn]
-]
-
-let subDeviceArray = subDeviceDicts as CFArray
 
 let desc: [CFString: Any] = [
-    nameKey: deviceName,
-    uidKey: deviceUID,
-    stackedKey: kCFBooleanTrue as CFBoolean,
-    subDeviceListKey: subDeviceArray
+    kAudioAggregateDeviceNameKey as CFString: deviceName,
+    kAudioAggregateDeviceUIDKey as CFString: deviceUID,
+    kAudioAggregateDeviceIsStackedKey as CFString: kCFBooleanTrue as CFBoolean,
+    kAudioAggregateDeviceMainSubDeviceKey as CFString: targetUID as CFString,
+    kAudioAggregateDeviceSubDeviceListKey as CFString: [
+        [kAudioSubDeviceUIDKey as CFString: targetUID as CFString],
+        [kAudioSubDeviceUIDKey as CFString: blackholeUID as CFString]
+    ] as CFArray
 ]
 
 let cfDesc = desc as CFDictionary
@@ -187,29 +184,5 @@ if status != noErr {
     print("ERROR: Failed to create aggregate device. OSStatus: \(status)")
     exit(1)
 }
-
-// Set the master clock device (the physical output, not BlackHole)
-var masterAddress = AudioObjectPropertyAddress(
-    mSelector: kAudioAggregateDevicePropertyMainSubDevice,
-    mScope: kAudioObjectPropertyScopeGlobal,
-    mElement: kAudioObjectPropertyElementMain
-)
-var masterDevice = targetDevice
-AudioObjectSetPropertyData(
-    newDeviceID, &masterAddress, 0, nil,
-    UInt32(MemoryLayout<AudioDeviceID>.size), &masterDevice
-)
-
-// Set sample rate to 48000 (common standard, avoids resync issues)
-var sampleRate = Float64(48000.0)
-var rateAddress = AudioObjectPropertyAddress(
-    mSelector: kAudioDevicePropertyNominalSampleRate,
-    mScope: kAudioObjectPropertyScopeGlobal,
-    mElement: kAudioObjectPropertyElementMain
-)
-AudioObjectSetPropertyData(
-    newDeviceID, &rateAddress, 0, nil,
-    UInt32(MemoryLayout<Float64>.size), &sampleRate
-)
 
 print("OK:\(newDeviceID):created:\(deviceName as String)")

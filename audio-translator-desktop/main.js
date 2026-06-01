@@ -1,13 +1,30 @@
-const { app, BrowserWindow, ipcMain, screen, desktopCapturer, shell } = require('electron');
 const path = require('path');
+
+// 代理模式：main.js 被 Electron 二进制作为子进程启动时，直接运行代理
+if (process.env.PROXY_MODE === '1') {
+  const { app } = require('electron');
+  app.dock.hide();
+  const proxyEntry = path.join(process.resourcesPath || path.join(__dirname, '..'), 'audio-translator-proxy', 'index.js');
+  require(proxyEntry);
+  return;
+}
+
+const { app, BrowserWindow, ipcMain, screen, desktopCapturer, shell } = require('electron');
 const fs = require('fs');
 const WebSocket = require('ws');
-const { execFile, spawn } = require('child_process');
+const { execFile, execFileSync, spawn } = require('child_process');
 const { promisify } = require('util');
 
 let mainWindow;
 let floatingWindow;
-let configPath = path.join(__dirname, 'config.json');
+function getConfigPath() {
+  // app.getPath('userData') 在 app ready 后才可用，用 try 保护
+  try {
+    return path.join(app.getPath('userData'), 'config.json');
+  } catch (e) {
+    return path.join(__dirname, 'config.json');
+  }
+}
 let doubaoWs = null;
 let doubaoPingTimer = null;
 let originalOutputDeviceName = null;
@@ -82,14 +99,15 @@ async function loadConfig() {
     appKey: '',
     resourceId: 'volc.service_type.10053',
     sourceLanguage: 'id',
-    targetLanguage: 'zh'
+    targetLanguage: 'zh',
+    multiOutputDeviceName: ''
   };
 
   try {
-    if (fs.existsSync(configPath)) {
+    if (fs.existsSync(getConfigPath())) {
       config = {
         ...config,
-        ...JSON.parse(fs.readFileSync(configPath, 'utf8'))
+        ...JSON.parse(fs.readFileSync(getConfigPath(), 'utf8'))
       };
     }
   } catch (e) {
@@ -102,25 +120,47 @@ async function loadConfig() {
         await saveApiKeyToKeychain(config.appKey);
       }
       delete config.appKey;
-      fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+      fs.writeFileSync(getConfigPath(), JSON.stringify(config, null, 2));
     } catch (e) {
       console.error('Failed to migrate API Key to Keychain:', e);
     }
   }
 
-  config.appKey = await readApiKeyFromKeychain();
+  // Keychain 操作在未签名 app 中可能卡住，加 5 秒超时
+  const fileAppKey = config.appKey || '';
+  try {
+    config.appKey = await Promise.race([
+      readApiKeyFromKeychain(),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
+    ]);
+  } catch (e) {
+    console.error('Keychain read failed:', e.message);
+    // 回退到文件中保存的 Key（keychain 保存失败时的后备方案）
+    config.appKey = fileAppKey;
+  }
   return config;
 }
 
 async function saveConfig(config) {
   try {
-    if (Object.prototype.hasOwnProperty.call(config, 'appKey')) {
-      await saveApiKeyToKeychain(config.appKey);
+    if (Object.prototype.hasOwnProperty.call(config, 'appKey') && config.appKey) {
+      try {
+        // Keychain 操作在未签名 app 中可能卡住，加 5 秒超时
+        await Promise.race([
+          saveApiKeyToKeychain(config.appKey),
+          new Promise((_, reject) => setTimeout(() => reject(new Error('keychain timeout')), 5000))
+        ]);
+      } catch (e) {
+        console.error('Keychain save failed, falling back to file:', e.message);
+        // Keychain 失败时把 API Key 存到文件
+        fs.writeFileSync(getConfigPath(), JSON.stringify({ ...config, _keychainFailed: true }, null, 2));
+        return;
+      }
     }
 
     const safeConfig = { ...config };
     delete safeConfig.appKey;
-    fs.writeFileSync(configPath, JSON.stringify(safeConfig, null, 2));
+    fs.writeFileSync(getConfigPath(), JSON.stringify(safeConfig, null, 2));
   } catch (e) {
     console.error('Failed to save config:', e);
     throw e;
@@ -177,7 +217,7 @@ async function getAudioEnvironment() {
     const items = getAudioItems(JSON.parse(stdout));
     const blackHoleDevices = items.filter(item => /blackhole/i.test(item._name || ''));
     const defaultOutput = items.find(item => item.coreaudio_default_audio_output_device === 'spaudio_yes');
-    const hasMultiOutput = Boolean(defaultOutput && /multi-output|多输出/i.test(defaultOutput._name || ''));
+    const hasMultiOutput = Boolean(defaultOutput && /multi-output|多输出|realtime translator/i.test(defaultOutput._name || ''));
     const switchAudioSourceAvailable = await hasSwitchAudioSource();
 
     if (!originalOutputDeviceName && defaultOutput?._name) {
@@ -229,20 +269,45 @@ function buildAudioGuide(blackHoleFound, hasMultiOutput, canAutoRestoreOutput) {
   return steps;
 }
 
+function isVirtualAudioDevice(name) {
+  if (!name) return true;
+  const lower = name.toLowerCase();
+  if (lower.includes('blackhole')) return true;
+  if (lower.includes('aggregate')) return true;
+  if (lower.includes('multi')) return true;
+  if (lower.includes('多输出')) return true;
+  if (lower.includes('realtime translator')) return true;
+  return false;
+}
+
 async function restoreOriginalOutputDevice() {
-  if (!originalOutputDeviceName) {
-    return { ok: false, message: '没有记录到启动前的默认输出设备' };
+  const saPath = getToolPath('SwitchAudioSource');
+  if (!fs.existsSync(saPath)) {
+    return { ok: false, message: 'SwitchAudioSource 不存在，无法自动恢复输出设备' };
   }
 
-  if (!(await hasSwitchAudioSource())) {
-    return {
-      ok: false,
-      message: `未安装 SwitchAudioSource，无法自动恢复。请手动切回：${originalOutputDeviceName}`
-    };
-  }
+  try {
+    // List all output devices
+    const stdout = await runCommand(saPath, ['-a', '-t', 'output']);
+    const devices = stdout.split('\n').map(s => s.trim()).filter(Boolean);
+    const physicalDevices = devices.filter(d => !isVirtualAudioDevice(d));
 
-  await runCommand('SwitchAudioSource', ['-t', 'output', '-s', originalOutputDeviceName]);
-  return { ok: true, outputDeviceName: originalOutputDeviceName };
+    if (physicalDevices.length === 0) {
+      return { ok: false, message: '未找到可用的物理输出设备', devices };
+    }
+
+    // Prefer built-in speakers (Mac扬声器, Internal Speakers, MacBook Pro/Air Speakers, Built-in Output)
+    const builtinKeywords = ['mac', '扬声器', 'internal', 'speaker', 'built-in', '内建'];
+    const builtin = physicalDevices.find(d =>
+      builtinKeywords.some(kw => d.toLowerCase().includes(kw))
+    );
+    const target = builtin || physicalDevices[0];
+
+    await runCommand(saPath, ['-t', 'output', '-s', target]);
+    return { ok: true, outputDeviceName: target };
+  } catch (e) {
+    return { ok: false, message: `恢复输出设备失败: ${e.message}` };
+  }
 }
 
 function clearDoubaoPingTimer() {
@@ -284,9 +349,20 @@ function startProxy() {
       return;
     }
 
+    // 杀掉可能残留的旧代理进程，释放端口
+    try {
+      const result = require('child_process').execSync('lsof -ti :3000', { encoding: 'utf8' }).trim();
+      if (result) {
+        result.split('\n').forEach(pid => {
+          try { process.kill(parseInt(pid), 'SIGKILL'); } catch (e) {}
+        });
+        console.log('[Main] Killed orphaned proxy on port 3000');
+      }
+    } catch (e) {}
+
     proxyProcess = spawn(process.execPath, [proxyPath], {
       cwd: path.dirname(proxyPath),
-      env: { ...process.env, PORT: '3000' },
+      env: { ...process.env, PORT: '3000', PROXY_MODE: '1' },
       stdio: ['ignore', 'pipe', 'pipe']
     });
 
@@ -393,7 +469,7 @@ function createFloatingWindow() {
 }
 
 app.whenReady().then(async () => {
-  getAudioEnvironment().catch(e => console.error('Failed to capture initial audio environment:', e));
+  await getAudioEnvironment().catch(e => console.error('Failed to capture initial audio environment:', e));
   try {
     await startProxy();
     console.log('[Main] Proxy started successfully');
@@ -411,21 +487,47 @@ app.on('window-all-closed', () => {
   }
 });
 
-app.on('before-quit', async (event) => {
-  if (!app.isRestoringAudioOutput) {
-    event.preventDefault();
-    app.isRestoringAudioOutput = true;
-    closeDoubaoWs();
-    stopProxy();
-    if (didSwitchOutput) {
-      try {
-        const result = await restoreOriginalOutputDevice();
-        console.log('[Main] Restore output result:', result);
-      } catch (e) {
-        console.error('[Main] Failed to restore output:', e);
+app.on('before-quit', () => {
+  closeDoubaoWs();
+  stopProxy();
+});
+
+app.on('will-quit', () => {
+  if (!didSwitchOutput) return;
+  try {
+    const saPath = getToolPath('SwitchAudioSource');
+    if (!fs.existsSync(saPath)) return;
+
+    let target = null;
+
+    // Prefer restoring to the original device we recorded at startup
+    if (originalOutputDeviceName) {
+      const stdout = execFileSync(saPath, ['-a', '-t', 'output'], { timeout: 5000, encoding: 'utf8' });
+      const devices = stdout.split('\n').map(s => s.trim()).filter(Boolean);
+      const match = devices.find(d => d === originalOutputDeviceName)
+        || devices.find(d => d.toLowerCase().includes(originalOutputDeviceName.toLowerCase()));
+      if (match) target = match;
+    }
+
+    // Fallback: find a physical (non-virtual) output device
+    if (!target) {
+      const stdout = execFileSync(saPath, ['-a', '-t', 'output'], { timeout: 5000, encoding: 'utf8' });
+      const devices = stdout.split('\n').map(s => s.trim()).filter(Boolean);
+      const physicalDevices = devices.filter(d => !isVirtualAudioDevice(d));
+      if (physicalDevices.length > 0) {
+        const builtinKeywords = ['mac', '扬声器', 'internal', 'speaker', 'built-in', '内建'];
+        target = physicalDevices.find(d =>
+          builtinKeywords.some(kw => d.toLowerCase().includes(kw))
+        ) || physicalDevices[0];
       }
     }
-    app.quit();
+
+    if (target) {
+      execFileSync(saPath, ['-t', 'output', '-s', target], { timeout: 5000 });
+      console.log('[Main] will-quit: restored output to', target);
+    }
+  } catch (e) {
+    console.error('[Main] will-quit: failed to restore output:', e.message);
   }
 });
 
@@ -517,17 +619,7 @@ ipcMain.handle('list-output-devices', async () => {
     const stdout = await runCommand(saPath, ['-a', '-t', 'output']);
     const devices = stdout.split('\n')
       .map(s => s.trim())
-      .filter(name => {
-        // Exclude BlackHole (virtual), aggregate/multi-output devices
-        if (!name) return false;
-        const lower = name.toLowerCase();
-        if (lower.includes('blackhole')) return false;
-        if (lower.includes('aggregate')) return false;
-        if (lower.includes('multi')) return false;
-        if (lower.includes('多输出')) return false;
-        if (lower.includes('realtime translator')) return false;
-        return true;
-      });
+      .filter(name => !isVirtualAudioDevice(name));
     return { ok: true, devices };
   } catch (e) {
     return { ok: false, devices: [], message: e.message };

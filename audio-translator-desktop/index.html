@@ -48,10 +48,7 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
-    .container {
-      max-width: 480px;
-      margin: 0 auto;
-    }
+    .container { max-width: 480px; margin: 0 auto; }
 
     /* Header */
     .app-header {
@@ -59,163 +56,77 @@
       padding: 20px 0 24px;
     }
     .app-header .logo {
-      width: 40px;
-      height: 40px;
+      width: 40px; height: 40px;
       border-radius: var(--radius-md);
       background: linear-gradient(135deg, var(--cyan-600), var(--cyan-500));
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       margin: 0 auto 12px;
     }
-    .app-header .logo svg {
-      width: 22px;
-      height: 22px;
-      stroke: white;
-    }
-    .app-header h1 {
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--slate-900);
-      letter-spacing: -0.3px;
-    }
-    .app-header .subtitle {
-      font-size: 13px;
-      color: var(--slate-500);
-      margin-top: 2px;
-    }
+    .app-header .logo svg { width: 22px; height: 22px; stroke: white; }
+    .app-header h1 { font-size: 20px; font-weight: 700; color: var(--slate-900); letter-spacing: -0.3px; }
+    .app-header .subtitle { font-size: 13px; color: var(--slate-500); margin-top: 2px; }
 
     /* Card */
     .card {
-      background: var(--white);
-      border-radius: var(--radius-lg);
-      padding: 20px 22px;
-      margin-bottom: 12px;
-      box-shadow: var(--shadow-sm);
-      border: 1px solid var(--slate-100);
+      background: var(--white); border-radius: var(--radius-lg);
+      padding: 20px 22px; margin-bottom: 12px;
+      box-shadow: var(--shadow-sm); border: 1px solid var(--slate-100);
     }
     .card-title {
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      color: var(--slate-400);
-      margin-bottom: 14px;
+      font-size: 12px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.8px; color: var(--slate-400); margin-bottom: 14px;
     }
 
     /* Form controls */
-    .form-group {
-      margin-bottom: 14px;
-    }
+    .form-group { margin-bottom: 14px; }
     .form-group:last-child { margin-bottom: 0; }
-    .form-label {
-      display: block;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--slate-600);
-      margin-bottom: 5px;
-    }
+    .form-label { display: block; font-size: 13px; font-weight: 500; color: var(--slate-600); margin-bottom: 5px; }
     .form-input, .form-select {
-      width: 100%;
-      padding: 9px 12px;
-      font-size: 14px;
-      font-family: inherit;
-      color: var(--slate-800);
-      background: var(--slate-50);
-      border: 1px solid var(--slate-200);
-      border-radius: var(--radius-sm);
+      width: 100%; padding: 9px 12px; font-size: 14px; font-family: inherit;
+      color: var(--slate-800); background: var(--slate-50);
+      border: 1px solid var(--slate-200); border-radius: var(--radius-sm);
       transition: border-color 0.15s ease, box-shadow 0.15s ease;
-      -webkit-appearance: none;
-      appearance: none;
+      -webkit-appearance: none; appearance: none;
     }
     .form-select {
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'%3E%3C/path%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 10px center;
-      padding-right: 32px;
+      background-repeat: no-repeat; background-position: right 10px center; padding-right: 32px;
     }
-    .form-input:focus, .form-select:focus {
-      outline: none;
-      border-color: var(--cyan-500);
-      box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
-    }
-    .form-hint {
-      font-size: 12px;
-      color: var(--slate-400);
-      margin-top: 4px;
-      line-height: 1.4;
-    }
+    .form-input:focus, .form-select:focus { outline: none; border-color: var(--cyan-500); box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1); }
+    .form-hint { font-size: 12px; color: var(--slate-400); margin-top: 4px; line-height: 1.4; }
 
     /* Buttons */
     .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      padding: 10px 18px;
-      font-size: 14px;
-      font-weight: 600;
-      font-family: inherit;
-      border: none;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      transition: all 0.15s ease;
-      white-space: nowrap;
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 10px 18px; font-size: 14px; font-weight: 600; font-family: inherit;
+      border: none; border-radius: var(--radius-sm); cursor: pointer;
+      transition: all 0.15s ease; white-space: nowrap;
     }
     .btn:active { transform: scale(0.98); }
-
-    .btn-primary {
-      background: var(--cyan-600);
-      color: white;
-    }
+    .btn-primary { background: var(--cyan-600); color: white; }
     .btn-primary:hover { background: var(--cyan-700); }
-
-    .btn-success {
-      background: var(--emerald-600);
-      color: white;
-    }
+    .btn-success { background: var(--emerald-600); color: white; }
     .btn-success:hover { background: #047857; }
-
-    .btn-secondary {
-      background: var(--slate-50);
-      color: var(--slate-700);
-      border: 1px solid var(--slate-200);
-    }
+    .btn-secondary { background: var(--slate-50); color: var(--slate-700); border: 1px solid var(--slate-200); }
     .btn-secondary:hover { background: var(--slate-100); }
-
-    .btn-danger {
-      background: var(--red-600);
-      color: white;
-    }
+    .btn-danger { background: var(--red-600); color: white; }
     .btn-danger:hover { background: #B91C1C; }
-
-    .btn-ghost {
-      background: transparent;
-      color: var(--slate-500);
-      padding: 6px 10px;
-      font-size: 13px;
-    }
+    .btn-warning { background: var(--amber-500); color: white; }
+    .btn-ghost { background: transparent; color: var(--slate-500); padding: 6px 10px; font-size: 13px; }
     .btn-ghost:hover { background: var(--slate-100); color: var(--slate-700); }
-
     .btn-sm { padding: 6px 12px; font-size: 12px; }
+    .btn-lg { padding: 14px 28px; font-size: 16px; border-radius: var(--radius-md); }
     .btn-block { width: 100%; justify-content: center; }
     .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-    .btn-row {
-      display: flex;
-      gap: 8px;
-      margin-top: 16px;
-    }
+    .btn-row { display: flex; gap: 8px; margin-top: 16px; }
     .btn-row .btn { flex: 1; }
+    .btn-row-sm { display: flex; gap: 6px; margin-top: 8px; }
+    .btn-row-sm .btn { flex: 1; }
 
     /* Status */
     .status {
-      text-align: center;
-      padding: 10px 16px;
-      border-radius: var(--radius-sm);
-      font-size: 13px;
-      font-weight: 500;
-      margin-top: 12px;
+      text-align: center; padding: 10px 16px; border-radius: var(--radius-sm);
+      font-size: 13px; font-weight: 500; margin-top: 12px;
     }
     .status-idle { background: var(--slate-100); color: var(--slate-500); }
     .status-translating { background: #ECFDF5; color: #065F46; }
@@ -223,138 +134,94 @@
 
     /* Log */
     .log-box {
-      margin-top: 12px;
-      padding: 14px 16px;
-      background: var(--slate-900);
-      color: var(--cyan-200);
-      border-radius: var(--radius-md);
+      margin-top: 12px; padding: 14px 16px; background: var(--slate-900);
+      color: var(--cyan-200); border-radius: var(--radius-md);
       font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
-      font-size: 12px;
-      line-height: 1.7;
-      max-height: 220px;
-      overflow-y: auto;
+      font-size: 12px; line-height: 1.7; max-height: 220px; overflow-y: auto;
     }
-    .log-line {
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      padding: 2px 0;
-    }
+    .log-line { border-bottom: 1px solid rgba(255,255,255,0.06); padding: 2px 0; }
 
     /* Env box */
     .env-box {
-      background: var(--slate-50);
-      border: 1px solid var(--slate-200);
-      border-radius: var(--radius-sm);
-      padding: 10px 14px;
-      font-size: 12px;
-      line-height: 1.7;
-      color: var(--slate-600);
-      white-space: pre-wrap;
+      background: var(--slate-50); border: 1px solid var(--slate-200);
+      border-radius: var(--radius-sm); padding: 10px 14px;
+      font-size: 12px; line-height: 1.7; color: var(--slate-600); white-space: pre-wrap;
     }
-
-    /* Row of small buttons */
-    .btn-row-sm {
-      display: flex;
-      gap: 6px;
-      margin-top: 8px;
-    }
-    .btn-row-sm .btn { flex: 1; }
 
     /* Wizard */
     .wizard-overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(12px);
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
+      display: flex; align-items: center; justify-content: center; z-index: 1000;
     }
     .wizard-overlay.hidden { display: none; }
-
     .wizard-card {
-      background: var(--white);
-      border-radius: var(--radius-lg);
-      padding: 32px 28px 24px;
-      width: 440px;
-      max-width: 94vw;
+      background: var(--white); border-radius: var(--radius-lg);
+      padding: 32px 28px 24px; width: 440px; max-width: 94vw;
       box-shadow: var(--shadow-lg);
     }
-    .wizard-steps {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 24px;
-    }
-    .wizard-step-dot {
-      flex: 1;
-      height: 3px;
-      border-radius: 2px;
-      background: var(--slate-200);
-      transition: background 0.3s;
-    }
+    .wizard-steps { display: flex; gap: 6px; margin-bottom: 24px; }
+    .wizard-step-dot { flex: 1; height: 3px; border-radius: 2px; background: var(--slate-200); transition: background 0.3s; }
     .wizard-step-dot.active { background: var(--cyan-600); }
     .wizard-step-dot.done { background: var(--emerald-600); }
-    .wizard-step-title {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 18px;
-      color: var(--slate-900);
-      letter-spacing: -0.2px;
-    }
+    .wizard-step-title { font-size: 18px; font-weight: 700; margin-bottom: 18px; color: var(--slate-900); letter-spacing: -0.2px; }
     .wizard-step-body { margin-bottom: 22px; min-height: 140px; }
-    .wizard-buttons {
-      display: flex;
-      gap: 10px;
-      justify-content: flex-end;
-    }
+    .wizard-buttons { display: flex; gap: 10px; justify-content: flex-end; }
     .wizard-buttons .btn { flex: unset; min-width: 90px; }
 
     /* Check items (wizard) */
     .check-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
-      margin-bottom: 6px;
-      border-radius: var(--radius-sm);
-      background: var(--slate-50);
-      font-size: 13px;
+      display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+      margin-bottom: 6px; border-radius: var(--radius-sm);
+      background: var(--slate-50); font-size: 13px;
     }
     .check-icon { font-size: 16px; flex-shrink: 0; width: 20px; text-align: center; }
     .check-icon.ok { color: var(--emerald-600); }
     .check-icon.warn { color: var(--amber-500); }
     .check-icon.error { color: var(--red-500); }
-
-    .fix-link {
-      color: var(--cyan-600);
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 13px;
-      margin-left: auto;
-      flex-shrink: 0;
-      text-decoration: none;
-    }
+    .fix-link { color: var(--cyan-600); cursor: pointer; font-weight: 600; font-size: 13px; margin-left: auto; flex-shrink: 0; text-decoration: none; }
     .fix-link:hover { color: var(--cyan-700); text-decoration: underline; }
-
-    .guide-text {
-      font-size: 12px;
-      color: var(--slate-400);
-      line-height: 1.7;
-      margin-top: 10px;
-    }
+    .guide-text { font-size: 12px; color: var(--slate-400); line-height: 1.7; margin-top: 10px; }
     .guide-text strong { color: var(--slate-600); }
-
-    .test-result {
-      text-align: center;
-      padding: 16px;
-    }
-    .test-result .icon { font-size: 40px; margin-bottom: 10px; }
-    .test-result.success .icon { color: var(--emerald-600); }
-    .test-result.fail .icon { color: var(--red-500); }
-
     .hidden { display: none !important; }
+
+    /* --- Dashboard Styles --- */
+
+    /* Compact header for returning users */
+    .app-header.compact { padding: 12px 0 16px; }
+    .app-header.compact h1 { font-size: 17px; }
+    .app-header.compact .subtitle { display: none; }
+
+    /* Status Strip */
+    .status-strip {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 16px; background: var(--white);
+      border-radius: var(--radius-md); margin-bottom: 12px;
+      box-shadow: var(--shadow-sm); border: 1px solid var(--slate-100);
+    }
+    .status-indicator {
+      width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+    }
+    .status-indicator.ok { background: var(--emerald-500); }
+    .status-indicator.warn { background: var(--amber-500); }
+    .status-indicator.error { background: var(--red-500); }
+    .status-label { flex: 1; font-size: 13px; font-weight: 500; color: var(--slate-700); }
+
+    /* Action Area */
+    .action-area { text-align: center; padding: 20px 0 8px; }
+    .action-area .btn-lg { min-width: 200px; margin-bottom: 8px; }
+    .action-secondary { margin-top: 8px; display: flex; justify-content: center; gap: 8px; }
+
+    /* Settings Drawer */
+    .settings-drawer {
+      overflow: hidden;
+      transition: max-height 0.3s ease, opacity 0.2s ease, margin 0.3s ease;
+    }
+    .settings-drawer.collapsed { max-height: 0; opacity: 0; margin-bottom: 0; }
+    .settings-drawer.expanded { max-height: 800px; opacity: 1; margin-bottom: 0; }
+    .settings-drawer .card { margin-bottom: 10px; }
+    .settings-drawer .card:last-child { margin-bottom: 0; }
   </style>
 </head>
 <body>
@@ -364,7 +231,6 @@
       <div class="wizard-steps">
         <div class="wizard-step-dot active" id="dot1"></div>
         <div class="wizard-step-dot" id="dot2"></div>
-        <div class="wizard-step-dot" id="dot3"></div>
       </div>
       <div class="wizard-step-title" id="wizardTitle"></div>
       <div class="wizard-step-body" id="wizardBody"></div>
@@ -374,92 +240,96 @@
 
   <!-- Main UI -->
   <div class="container">
-    <div class="app-header">
+    <div class="app-header" id="appHeader">
       <div class="logo">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M2 12h2"/>
-          <path d="M6 8v8"/>
-          <path d="M10 5v14"/>
-          <path d="M14 9v6"/>
-          <path d="M18 7v10"/>
-          <path d="M22 12h-2"/>
+          <path d="M2 12h2"/><path d="M6 8v8"/><path d="M10 5v14"/><path d="M14 9v6"/><path d="M18 7v10"/><path d="M22 12h-2"/>
         </svg>
       </div>
       <h1>RealTime Translator</h1>
-      <div class="subtitle">实时音频翻译 &middot; 印尼语 &rarr; 中文</div>
+      <div class="subtitle" id="headerSubtitle">实时音频翻译 &middot; 印尼语 &rarr; 中文</div>
     </div>
 
-    <!-- Settings Card -->
-    <div class="card">
-      <div class="card-title">Settings</div>
-      <div class="form-group">
-        <label class="form-label" for="appKey">API Key</label>
-        <input class="form-input" type="text" id="appKey" placeholder="火山引擎语音 API Key">
-        <div class="form-hint">保存到 macOS Keychain，不写入配置文件</div>
-      </div>
-      <div class="form-group">
-        <label class="form-label" for="resourceId">Resource ID</label>
-        <input class="form-input" type="text" id="resourceId" value="volc.service_type.10053">
-      </div>
-      <div style="display:flex;gap:12px;">
-        <div class="form-group" style="flex:1;">
-          <label class="form-label" for="sourceLanguage">源语言</label>
-          <select class="form-select" id="sourceLanguage">
-            <option value="id">印尼语</option>
-            <option value="en">英语</option>
-            <option value="ja">日语</option>
-            <option value="ko">韩语</option>
-          </select>
-        </div>
-        <div class="form-group" style="flex:1;">
-          <label class="form-label" for="targetLanguage">目标语言</label>
-          <select class="form-select" id="targetLanguage">
-            <option value="zh">简体中文</option>
-            <option value="en">英语</option>
-          </select>
-        </div>
-      </div>
+    <!-- Status strip -->
+    <div class="status-strip" id="statusStrip">
+      <span class="status-indicator" id="statusIndicator"></span>
+      <span class="status-label" id="statusLabel">Checking...</span>
+      <button class="btn btn-ghost btn-sm" id="toggleSettingsBtn">Settings</button>
     </div>
 
-    <!-- Audio Card -->
-    <div class="card">
-      <div class="card-title">Audio</div>
-      <div class="form-group">
-        <label class="form-label" for="audioSourceType">音频来源</label>
-        <select class="form-select" id="audioSourceType">
-          <option value="input">音频输入设备（BlackHole）</option>
-          <option value="screen">屏幕 / 窗口共享音频</option>
-        </select>
-        <div class="form-hint">使用 BlackHole 时，请先将系统声音输出到 BlackHole</div>
+    <!-- Collapsible Settings Drawer -->
+    <div class="settings-drawer collapsed" id="settingsDrawer">
+      <div class="card">
+        <div class="card-title">API Key</div>
+        <div class="form-group">
+          <label class="form-label" for="appKey">API Key</label>
+          <input class="form-input" type="text" id="appKey" placeholder="火山引擎语音 API Key">
+          <div class="form-hint">保存到 macOS Keychain，不写入配置文件</div>
+        </div>
       </div>
-      <div class="form-group" id="audioInputSection">
-        <label class="form-label" for="audioInputDevice">输入设备</label>
-        <select class="form-select" id="audioInputDevice">
-          <option value="">系统默认输入</option>
-        </select>
+      <div class="card">
+        <div class="card-title">Languages</div>
+        <div style="display:flex;gap:12px;">
+          <div class="form-group" style="flex:1;">
+            <label class="form-label" for="sourceLanguage">源语言</label>
+            <select class="form-select" id="sourceLanguage">
+              <option value="id">印尼语</option>
+              <option value="en">英语</option>
+              <option value="ja">日语</option>
+              <option value="ko">韩语</option>
+            </select>
+          </div>
+          <div class="form-group" style="flex:1;">
+            <label class="form-label" for="targetLanguage">目标语言</label>
+            <select class="form-select" id="targetLanguage">
+              <option value="zh">简体中文</option>
+              <option value="en">英语</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Audio</div>
+        <div class="form-group">
+          <label class="form-label" for="audioSourceType">音频来源</label>
+          <select class="form-select" id="audioSourceType">
+            <option value="input">音频输入设备（BlackHole）</option>
+            <option value="screen">屏幕 / 窗口共享音频</option>
+          </select>
+          <div class="form-hint">使用 BlackHole 时，请先将系统声音输出到 BlackHole</div>
+        </div>
+        <div class="form-group" id="audioInputSection">
+          <label class="form-label" for="audioInputDevice">输入设备</label>
+          <select class="form-select" id="audioInputDevice">
+            <option value="">系统默认输入</option>
+          </select>
+          <div class="btn-row-sm">
+            <button class="btn btn-ghost btn-sm" id="refreshDevicesBtn" type="button">刷新设备列表</button>
+          </div>
+        </div>
+        <div class="env-box" id="audioEnvBox">检查中...</div>
         <div class="btn-row-sm">
-          <button class="btn btn-ghost btn-sm" id="refreshDevicesBtn" type="button">刷新设备列表</button>
+          <button class="btn btn-ghost btn-sm" id="checkAudioEnvBtn" type="button">重新检查</button>
+          <button class="btn btn-ghost btn-sm" id="restoreOutputBtn" type="button">恢复原输出</button>
+          <button class="btn btn-ghost btn-sm" id="openAudioMidiBtn" type="button">音频 MIDI 设置</button>
+          <button class="btn btn-ghost btn-sm" id="openSoundSettingsBtn" type="button">声音设置</button>
         </div>
-      </div>
-      <div class="env-box" id="audioEnvBox">检查中...</div>
-      <div class="btn-row-sm">
-        <button class="btn btn-ghost btn-sm" id="checkAudioEnvBtn" type="button">重新检查</button>
-        <button class="btn btn-ghost btn-sm" id="restoreOutputBtn" type="button">恢复原输出</button>
-        <button class="btn btn-ghost btn-sm" id="openAudioMidiBtn" type="button">音频 MIDI 设置</button>
-        <button class="btn btn-ghost btn-sm" id="openSoundSettingsBtn" type="button">声音设置</button>
       </div>
     </div>
 
-    <!-- Controls -->
+    <input type="hidden" id="resourceId" value="volc.service_type.10053">
+
+    <!-- Action area -->
+    <div class="action-area">
+      <button class="btn btn-success btn-lg" id="translateToggleBtn">开始翻译</button>
+      <div class="action-secondary">
+        <button class="btn btn-ghost btn-sm" id="toggleFloatBtn">显示浮窗</button>
+        <button class="btn btn-ghost btn-sm" id="releaseAudioBtn" type="button">释放音频</button>
+      </div>
+    </div>
+
+    <!-- Translation status -->
     <div class="status status-idle" id="status">待开始</div>
-    <div class="btn-row">
-      <button class="btn btn-success btn-block" id="startBtn">开始翻译</button>
-      <button class="btn btn-danger" id="stopBtn" disabled>停止</button>
-    </div>
-    <div class="btn-row-sm">
-      <button class="btn btn-ghost btn-sm" id="releaseAudioBtn" type="button">释放音频</button>
-      <button class="btn btn-ghost btn-sm" id="toggleFloatBtn">显示浮窗</button>
-    </div>
 
     <!-- Log -->
     <div class="log-box" id="logBox">
@@ -475,37 +345,18 @@
       const time = new Date().toLocaleTimeString();
       const line = document.createElement('div');
       line.className = 'log-line';
-      line.textContent = `[${time}] ${message}`;
+      line.textContent = '[' + time + '] ' + message;
       logBox.appendChild(line);
       logBox.scrollTop = logBox.scrollHeight;
       console.log(message);
     }
 
-    log('Ready');
-
-    let audioStream = null;
-    let audioContext = null;
-    let audioSourceNode = null;
-    let audioProcessorNode = null;
-    let pcmSamples = [];
-    let isSessionStarted = false;
-    let ws = null;
-    let isTranslating = false;
-    let floatVisible = false;
-    let manualStopping = false;
-    let reconnectTimer = null;
-    let reconnectAttempts = 0;
-    let watchdogTimer = null;
-    let lastMessageAt = 0;
-    let currentConfig = null;
-    const MAX_RECONNECT_ATTEMPTS = 8;
-    const WATCHDOG_TIMEOUT_MS = 90000;
-
     function maskKey(key) {
       if (!key || key.length <= 12) return '***';
-      return `${key.slice(0, 6)}...${key.slice(-4)}`;
+      return key.slice(0, 6) + '...' + key.slice(-4);
     }
 
+    // --- DOM refs ---
     const appKeyInput = document.getElementById('appKey');
     const resourceIdInput = document.getElementById('resourceId');
     const sourceLanguageSelect = document.getElementById('sourceLanguage');
@@ -519,17 +370,38 @@
     const restoreOutputBtn = document.getElementById('restoreOutputBtn');
     const openAudioMidiBtn = document.getElementById('openAudioMidiBtn');
     const openSoundSettingsBtn = document.getElementById('openSoundSettingsBtn');
-    const startBtn = document.getElementById('startBtn');
-    const stopBtn = document.getElementById('stopBtn');
+    const translateToggleBtn = document.getElementById('translateToggleBtn');
     const releaseAudioBtn = document.getElementById('releaseAudioBtn');
     const toggleFloatBtn = document.getElementById('toggleFloatBtn');
     const statusDiv = document.getElementById('status');
+    const toggleSettingsBtn = document.getElementById('toggleSettingsBtn');
+    const settingsDrawer = document.getElementById('settingsDrawer');
 
-    function updateStatus(message, type = 'idle') {
+    // --- State ---
+    let audioStream = null;
+    let audioContext = null;
+    let audioSourceNode = null;
+    let audioProcessorNode = null;
+    let pcmSamples = [];
+    let isSessionStarted = false;
+    let isTranslating = false;
+    let floatVisible = false;
+    let manualStopping = false;
+    let reconnectTimer = null;
+    let reconnectAttempts = 0;
+    let watchdogTimer = null;
+    let lastMessageAt = 0;
+    let currentConfig = null;
+    const MAX_RECONNECT_ATTEMPTS = 8;
+    const WATCHDOG_TIMEOUT_MS = 90000;
+
+    function updateStatus(message, type) {
+      type = type || 'idle';
       statusDiv.textContent = message;
-      statusDiv.className = `status status-${type}`;
+      statusDiv.className = 'status status-' + type;
     }
 
+    // --- Config ---
     async function loadSavedConfig() {
       try {
         const config = await ipcRenderer.invoke('load-config');
@@ -537,410 +409,386 @@
         if (config.resourceId) resourceIdInput.value = config.resourceId;
         if (config.sourceLanguage) sourceLanguageSelect.value = config.sourceLanguage;
         if (config.targetLanguage) targetLanguageSelect.value = config.targetLanguage;
-        log(config.appKey ? '已加载 Keychain 中的 API Key' : '未找到已保存的 API Key');
+        document.getElementById('headerSubtitle').textContent =
+          '实时音频翻译 · ' + (config.sourceLanguage || 'id').toUpperCase() + ' → ' + (config.targetLanguage || 'zh').toUpperCase();
+        return config;
       } catch (error) {
-        log(`加载配置失败: ${error.message || error}`);
+        log('加载配置失败: ' + (error.message || error));
+        return {};
       }
     }
 
     async function saveCurrentConfig(config) {
       await ipcRenderer.invoke('save-config', config);
-      log('配置已保存');
     }
 
+    // --- Audio environment ---
     async function checkAudioEnvironment() {
       try {
         const env = await ipcRenderer.invoke('get-audio-environment');
         if (!env.supported) {
-          audioEnvBox.textContent = `无法检测音频环境：${env.message || '未知原因'}`;
-          return;
+          audioEnvBox.textContent = '无法检测音频环境：' + (env.message || '未知原因');
+          return env;
         }
-
         const lines = [
-          `BlackHole: ${env.blackHoleFound ? `已安装 (${env.blackHoleDevices.join(', ')})` : '未检测到'}`,
-          `默认输出: ${env.defaultOutputName || '未知'}`,
-          `多输出设备: ${env.isDefaultOutputMultiOutput ? '是' : '否'}`,
-          `启动前输出: ${env.originalOutputDeviceName || '未记录'}`,
-          `自动恢复: ${env.canAutoRestoreOutput ? '可用' : '需安装 SwitchAudioSource'}`,
+          'BlackHole: ' + (env.blackHoleFound ? '已安装 (' + env.blackHoleDevices.join(', ') + ')' : '未检测到'),
+          '默认输出: ' + (env.defaultOutputName || '未知'),
+          '多输出设备: ' + (env.isDefaultOutputMultiOutput ? '是' : '否'),
+          '启动前输出: ' + (env.originalOutputDeviceName || '未记录'),
+          '自动恢复: ' + (env.canAutoRestoreOutput ? '可用' : '需安装 SwitchAudioSource'),
           '',
           ...(env.guide || [])
         ];
         audioEnvBox.textContent = lines.join('\n');
+        return env;
       } catch (error) {
-        audioEnvBox.textContent = `检查失败：${error.message || error}`;
+        audioEnvBox.textContent = '检查失败：' + (error.message || error);
+        return null;
       }
     }
 
     async function restoreOriginalOutput() {
       try {
         const result = await ipcRenderer.invoke('restore-original-output');
-        if (result.ok) {
-          log(`已恢复输出: ${result.outputDeviceName}`);
-        } else {
-          log(`无法恢复: ${result.message}`);
-          alert(result.message);
-        }
+        if (result.ok) { log('已恢复输出: ' + result.outputDeviceName); }
+        else { log('无法恢复: ' + result.message); alert(result.message); }
         checkAudioEnvironment();
-      } catch (error) {
-        log(`恢复失败: ${error.message || error}`);
-      }
+      } catch (error) { log('恢复失败: ' + (error.message || error)); }
     }
 
     async function openAudioMidiSetup() {
       const result = await ipcRenderer.invoke('open-audio-midi-setup');
-      if (!result.ok) log(`打开失败: ${result.message || '未知错误'}`);
+      if (!result.ok) log('打开失败: ' + (result.message || '未知错误'));
     }
 
     async function openSoundSettings() {
-      try {
-        await ipcRenderer.invoke('open-sound-settings');
-      } catch (error) {
-        log(`打开失败: ${error.message || error}`);
-      }
+      try { await ipcRenderer.invoke('open-sound-settings'); }
+      catch (error) { log('打开失败: ' + (error.message || error)); }
     }
 
     function updateAudioInputVisibility() {
       audioInputSection.style.display = audioSourceTypeSelect.value === 'input' ? 'block' : 'none';
     }
 
-    async function loadAudioInputDevices(requestPermission = false) {
+    async function loadAudioInputDevices(requestPermission) {
       try {
-        let permissionStream = null;
+        var permissionStream = null;
         if (requestPermission) {
           permissionStream = await navigator.mediaDevices.getUserMedia({ audio: true });
         }
-
-        const currentValue = audioInputDeviceSelect.value;
-        const devices = await navigator.mediaDevices.enumerateDevices();
-        const audioInputs = devices.filter(device => device.kind === 'audioinput');
+        var currentValue = audioInputDeviceSelect.value;
+        var devices = await navigator.mediaDevices.enumerateDevices();
+        var audioInputs = devices.filter(function(d) { return d.kind === 'audioinput'; });
         audioInputDeviceSelect.innerHTML = '<option value="">系统默认输入</option>';
-
-        for (const device of audioInputs) {
-          const option = document.createElement('option');
-          option.value = device.deviceId;
-          option.textContent = device.label || `设备 ${audioInputDeviceSelect.length}`;
+        for (var i = 0; i < audioInputs.length; i++) {
+          var option = document.createElement('option');
+          option.value = audioInputs[i].deviceId;
+          option.textContent = audioInputs[i].label || '设备 ' + audioInputDeviceSelect.length;
           audioInputDeviceSelect.appendChild(option);
         }
-
-        const blackHoleDevice = audioInputs.find(device => /blackhole/i.test(device.label || ''));
-        if (currentValue && audioInputs.some(device => device.deviceId === currentValue)) {
+        var blackHoleDevice = audioInputs.find(function(d) { return /blackhole/i.test(d.label || ''); });
+        if (currentValue && audioInputs.some(function(d) { return d.deviceId === currentValue; })) {
           audioInputDeviceSelect.value = currentValue;
         } else if (blackHoleDevice) {
           audioInputDeviceSelect.value = blackHoleDevice.deviceId;
-          log(`已自动选择: ${blackHoleDevice.label}`);
+          log('已自动选择: ' + blackHoleDevice.label);
         }
+        if (permissionStream) { permissionStream.getTracks().forEach(function(t) { t.stop(); }); }
+      } catch (error) { log('加载输入设备失败: ' + (error.message || error)); }
+    }
 
-        if (permissionStream) {
-          permissionStream.getTracks().forEach(track => track.stop());
+    // --- Dashboard ---
+    async function updatePrerequisitesStatus() {
+      var indicator = document.getElementById('statusIndicator');
+      var label = document.getElementById('statusLabel');
+      var strip = document.getElementById('statusStrip');
+      // Remove any existing setup link
+      var existingLink = document.getElementById('rerunSetupLink');
+      if (existingLink) existingLink.remove();
+
+      try {
+        var env = await ipcRenderer.invoke('get-audio-environment');
+        var config = await ipcRenderer.invoke('load-config');
+        var bhOk = env.blackHoleFound;
+        var moOk = env.isDefaultOutputMultiOutput || (config.multiOutputDeviceName && env.defaultOutputName === config.multiOutputDeviceName);
+        var apiOk = !!config.appKey;
+        if (bhOk && moOk && apiOk) {
+          indicator.className = 'status-indicator ok';
+          label.textContent = 'Ready to translate';
+        } else {
+          indicator.className = 'status-indicator warn';
+          var issues = [];
+          if (!bhOk) issues.push('BlackHole not installed');
+          if (!moOk) issues.push('Multi-output device not active');
+          if (!apiOk) issues.push('API Key missing');
+          label.textContent = issues.join(' | ');
+          // Add a "Setup" link to re-run wizard
+          var link = document.createElement('span');
+          link.id = 'rerunSetupLink';
+          link.textContent = 'Setup';
+          link.style.cssText = 'color:var(--cyan-600);cursor:pointer;font-weight:600;font-size:13px;margin-left:4px;flex-shrink:0;';
+          link.addEventListener('click', function() {
+            showWizard();
+          });
+          strip.appendChild(link);
         }
-      } catch (error) {
-        log(`加载输入设备失败: ${error.message || error}`);
+      } catch (e) {
+        indicator.className = 'status-indicator error';
+        label.textContent = 'Could not check status';
       }
     }
 
+    async function autoRestoreOutput() {
+      var config = await ipcRenderer.invoke('load-config');
+      if (!config.multiOutputDeviceName) {
+        log('No saved multi-output device to restore');
+        return;
+      }
+      log('Auto-restoring output to: ' + config.multiOutputDeviceName);
+      try {
+        var result = await ipcRenderer.invoke('switch-output', config.multiOutputDeviceName);
+        log('Auto-restored: ' + (result.deviceName || config.multiOutputDeviceName));
+      } catch (e) {
+        log('Auto-restore failed: ' + (e.message || e) + '. You may need to re-create the multi-output device.');
+      }
+    }
+
+    function toggleSettingsDrawer() {
+      var isCollapsed = settingsDrawer.classList.contains('collapsed');
+      if (isCollapsed) {
+        settingsDrawer.classList.remove('collapsed');
+        settingsDrawer.classList.add('expanded');
+        toggleSettingsBtn.textContent = 'Hide Settings';
+        checkAudioEnvironment();
+      } else {
+        settingsDrawer.classList.add('collapsed');
+        settingsDrawer.classList.remove('expanded');
+        toggleSettingsBtn.textContent = 'Settings';
+      }
+    }
+
+    // --- Translation pipeline ---
     function generateSessionId() {
       return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        const r = Math.random() * 16 | 0;
-        const v = c === 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
+        var r = Math.random() * 16 | 0;
+        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
       });
     }
 
-    ipcRenderer.on('doubao-log', (event, message) => { log(message); });
+    ipcRenderer.on('doubao-log', function(event, message) { log(message); });
 
-    ipcRenderer.on('doubao-message', (event, data) => {
+    ipcRenderer.on('doubao-message', function(event, data) {
       log('收到消息');
       try {
-        const response = JSON.parse(data);
+        var response = JSON.parse(data);
         lastMessageAt = Date.now();
-        log(`事件: ${response.event}`);
-
-        let subtitleText = '';
-        let sourceText = '';
-        let subtitleEvent = response.event;
-
+        var subtitleText = '';
+        var sourceText = '';
+        var subtitleEvent = response.event;
         switch (response.event) {
           case 150:
-            log('会话已开始');
-            isSessionStarted = true;
-            reconnectAttempts = 0;
+            log('会话已开始'); isSessionStarted = true; reconnectAttempts = 0;
             updateStatus('翻译中', 'translating');
             break;
-          case 651:
-          case 652:
+          case 651: case 652:
             sourceText = response.text || '';
             break;
-          case 654:
-          case 655:
+          case 654: case 655:
             subtitleText = response.text || '';
-            log(`译文: ${subtitleText}`);
+            if (subtitleText) log('译文: ' + subtitleText);
             break;
           case 152:
             log('会话已结束');
-            if (isTranslating && !manualStopping) {
-              scheduleReconnect('服务端结束会话');
-            }
+            if (isTranslating && !manualStopping) scheduleReconnect('服务端结束会话');
             break;
           case 153:
-            const responseMeta = response.response_meta || response.responseMeta || {};
-            const responseData = response.data ? base64ToUtf8(response.data) : '';
-            const statusCode = responseMeta.statusCode || responseMeta.StatusCode;
-            const errorMessage = responseMeta.message || responseMeta.Message || responseData || `错误，状态码: ${statusCode || '未知'}`;
-            log(`会话失败: ${errorMessage}`);
+            var responseMeta = response.response_meta || response.responseMeta || {};
+            var responseData = response.data ? base64ToUtf8(response.data) : '';
+            var statusCode = responseMeta.statusCode || responseMeta.StatusCode;
+            var errorMessage = responseMeta.message || responseMeta.Message || responseData || ('错误，状态码: ' + (statusCode || '未知'));
+            log('会话失败: ' + errorMessage);
             if (isTranslating && !manualStopping && shouldRetrySession(errorMessage, statusCode)) {
-              scheduleReconnect(`会话失败: ${errorMessage}`);
+              scheduleReconnect('会话失败: ' + errorMessage);
             } else {
               updateStatus('会话失败: ' + errorMessage, 'error');
               stopTranslation();
             }
             break;
         }
-
         if (subtitleText || sourceText) {
-          ipcRenderer.invoke('send-subtitle', {
-            event: subtitleEvent,
-            source: sourceText,
-            translation: subtitleText
-          });
+          ipcRenderer.invoke('send-subtitle', { event: subtitleEvent, source: sourceText, translation: subtitleText });
         }
-      } catch (e) {
-        log(`解析失败: ${e}`);
-      }
+      } catch (e) { log('解析失败: ' + e); }
     });
 
-    ipcRenderer.on('doubao-error', (event, message) => {
-      log(`WebSocket 错误: ${message}`);
-      if (isTranslating && !manualStopping) {
-        scheduleReconnect(`连接错误: ${message}`);
+    ipcRenderer.on('doubao-error', function(event, message) {
+      log('WebSocket 错误: ' + message);
+      if (isTranslating && !manualStopping) { scheduleReconnect('连接错误: ' + message); }
+      else { updateStatus('连接错误', 'error'); stopTranslation(); }
+    });
+
+    ipcRenderer.on('doubao-close', function(event, info) {
+      log('WebSocket 已关闭: ' + info.code + ' ' + (info.reason || ''));
+      if (isTranslating && !manualStopping) { scheduleReconnect('连接断开: ' + info.code + ' ' + (info.reason || '')); }
+    });
+
+    function setTranslateButton(state) {
+      if (state === 'translating') {
+        translateToggleBtn.textContent = '停止翻译';
+        translateToggleBtn.className = 'btn btn-danger btn-lg';
+        translateToggleBtn.disabled = false;
+      } else if (state === 'connecting') {
+        translateToggleBtn.textContent = '启动中...';
+        translateToggleBtn.className = 'btn btn-warning btn-lg';
+        translateToggleBtn.disabled = true;
       } else {
-        updateStatus('连接错误', 'error');
-        stopTranslation();
+        translateToggleBtn.textContent = '开始翻译';
+        translateToggleBtn.className = 'btn btn-success btn-lg';
+        translateToggleBtn.disabled = false;
       }
-    });
-
-    ipcRenderer.on('doubao-close', (event, info) => {
-      log(`WebSocket 已关闭: ${info.code} ${info.reason || ''}`);
-      if (isTranslating && !manualStopping) {
-        scheduleReconnect(`连接断开: ${info.code} ${info.reason || ''}`);
-      }
-    });
+    }
 
     async function startTranslation() {
       log('=== 开始翻译 ===');
-
-      if (!appKeyInput.value) {
-        log('错误：缺少 API Key');
-        alert('请先填写 API Key');
-        return;
-      }
-
+      if (!appKeyInput.value) { log('错误：缺少 API Key'); alert('请先填写 API Key（点击 Settings）'); return; }
       try {
         updateStatus('正在启动...', 'translating');
-        startBtn.disabled = true;
-        manualStopping = false;
-        reconnectAttempts = 0;
-
-        const config = {
-          appKey: appKeyInput.value.trim(),
-          resourceId: resourceIdInput.value,
-          sourceLanguage: sourceLanguageSelect.value,
-          targetLanguage: targetLanguageSelect.value
+        setTranslateButton('connecting'); manualStopping = false; reconnectAttempts = 0;
+        var config = {
+          appKey: appKeyInput.value.trim(), resourceId: resourceIdInput.value,
+          sourceLanguage: sourceLanguageSelect.value, targetLanguage: targetLanguageSelect.value
         };
-
-        if (config.appKey.startsWith('ark-')) {
-          log('警告：当前是 ark API Key，请改用 speech 控制台的语音 API Key');
-        }
-
-        log(`配置: ${JSON.stringify({ ...config, appKey: maskKey(config.appKey) })}`);
+        if (config.appKey.startsWith('ark-')) { log('警告：当前是 ark API Key，请改用 speech 控制台的语音 API Key'); }
+        log('配置: ' + JSON.stringify({ appKey: maskKey(config.appKey), resourceId: config.resourceId, sourceLanguage: config.sourceLanguage, targetLanguage: config.targetLanguage }));
         await saveCurrentConfig(config);
         currentConfig = config;
-
         log('请求音频权限...');
         audioStream = await getAudioStream();
         log('音频权限已获取');
-
         audioContext = new (window.AudioContext || window.webkitAudioContext)();
         log('AudioContext 已创建');
-
         isTranslating = true;
         await connectAndStartSession(config, false);
         startPcmStreaming();
         log('PCM 音频流已启动');
         updateStatus('翻译中', 'translating');
-        stopBtn.disabled = false;
+        setTranslateButton('translating');
         startWatchdog();
-
         if (!floatVisible) { toggleFloat(); }
-
       } catch (error) {
-        log(`启动失败: ${error}`);
-        manualStopping = true;
-        isTranslating = false;
-        isSessionStarted = false;
-        clearReconnectTimer();
-        stopWatchdog();
-        releaseAudioCapture();
-        ipcRenderer.invoke('doubao-disconnect').catch(() => {});
+        log('启动失败: ' + error);
+        manualStopping = true; isTranslating = false; isSessionStarted = false;
+        clearReconnectTimer(); stopWatchdog(); releaseAudioCapture();
+        ipcRenderer.invoke('doubao-disconnect').catch(function() {});
         currentConfig = null;
         updateStatus('启动失败: ' + error.message, 'error');
-        startBtn.disabled = false;
-        stopBtn.disabled = true;
+        setTranslateButton('idle');
         alert('启动失败: ' + error.message);
       }
     }
 
     async function connectAndStartSession(config, isReconnect) {
-      isSessionStarted = false;
-      lastMessageAt = Date.now();
-      const sessionId = generateSessionId();
-      log(`${isReconnect ? '重建' : '创建'}会话 ID: ${sessionId}`);
-
+      isSessionStarted = false; lastMessageAt = Date.now();
+      var sessionId = generateSessionId();
+      log((isReconnect ? '重建' : '创建') + '会话 ID: ' + sessionId);
       updateStatus(isReconnect ? '重连中...' : '连接服务器...', 'translating');
       log('通过主进程连接 WebSocket...');
       await ipcRenderer.invoke('doubao-connect', config);
       log('WebSocket 已连接');
       updateStatus('初始化...', 'translating');
-
-      const startRequest = {
-        request_meta: { session_id: sessionId },
-        event: 100,
-        user: {
-          uid: 'desktop-' + Date.now(),
-          did: 'desktop',
-          platform: 'Electron Desktop',
-          sdk_version: '1.0.0'
-        },
-        request: {
-          mode: 's2t',
-          speech_rate: 0,
-          source_language: config.sourceLanguage,
-          target_language: config.targetLanguage,
-          corpus: {}
-        },
-        source_audio: {
-          format: 'wav',
-          codec: 'raw',
-          rate: 16000,
-          bits: 16,
-          channel: 1
-        }
+      var startRequest = {
+        request_meta: { session_id: sessionId }, event: 100,
+        user: { uid: 'desktop-' + Date.now(), did: 'desktop', platform: 'Electron Desktop', sdk_version: '1.0.0' },
+        request: { mode: 's2t', speech_rate: 0, source_language: config.sourceLanguage, target_language: config.targetLanguage, corpus: {} },
+        source_audio: { format: 'wav', codec: 'raw', rate: 16000, bits: 16, channel: 1 }
       };
-
       log('发送会话开始请求');
       await ipcRenderer.invoke('doubao-send', startRequest);
     }
 
     async function getAudioStream() {
       if (audioSourceTypeSelect.value === 'input') {
-        const selectedDevice = audioInputDeviceSelect.selectedOptions[0]?.textContent || '系统默认输入';
-        log(`音频来源：输入设备 - ${selectedDevice}`);
-        const audioConstraints = {
-          echoCancellation: false,
-          noiseSuppression: false,
-          autoGainControl: false
-        };
-
-        if (audioInputDeviceSelect.value) {
-          audioConstraints.deviceId = { exact: audioInputDeviceSelect.value };
-        }
-
-        return await navigator.mediaDevices.getUserMedia({ audio: audioConstraints });
+        var label = audioInputDeviceSelect.selectedOptions[0] && audioInputDeviceSelect.selectedOptions[0].textContent || '系统默认输入';
+        log('音频来源：输入设备 - ' + label);
+        var constraints = { echoCancellation: false, noiseSuppression: false, autoGainControl: false };
+        if (audioInputDeviceSelect.value) { constraints.deviceId = { exact: audioInputDeviceSelect.value }; }
+        return await navigator.mediaDevices.getUserMedia({ audio: constraints });
       }
-
       log('音频来源：窗口共享，请在弹窗中选择播放视频的窗口并勾选共享音频');
-      const stream = await navigator.mediaDevices.getDisplayMedia({
-        video: true,
-        audio: {
-          echoCancellation: false,
-          noiseSuppression: false,
-          autoGainControl: false
-        }
-      });
-
+      var stream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
       if (stream.getAudioTracks().length === 0) {
-        stream.getTracks().forEach(track => track.stop());
+        stream.getTracks().forEach(function(t) { t.stop(); });
         throw new Error('未获取到音频。请重新选择并勾选"共享音频"；macOS 需给应用屏幕录制权限。');
       }
-
       return stream;
     }
 
     function startPcmStreaming() {
-      const inputSampleRate = audioContext.sampleRate;
+      var inputSampleRate = audioContext.sampleRate;
       audioSourceNode = audioContext.createMediaStreamSource(audioStream);
       audioProcessorNode = audioContext.createScriptProcessor(4096, 1, 1);
       pcmSamples = [];
-
-      audioProcessorNode.onaudioprocess = (event) => {
+      audioProcessorNode.onaudioprocess = function(event) {
         if (!isTranslating || !isSessionStarted) return;
-
-        const input = event.inputBuffer.getChannelData(0);
-        const output = event.outputBuffer.getChannelData(0);
+        var input = event.inputBuffer.getChannelData(0);
+        var output = event.outputBuffer.getChannelData(0);
         output.fill(0);
-
-        const resampled = resampleTo16k(input, inputSampleRate);
-        pcmSamples.push(...resampled);
-
+        var resampled = resampleTo16k(input, inputSampleRate);
+        pcmSamples.push.apply(pcmSamples, resampled);
         if (pcmSamples.length >= 3200) {
-          const chunk = pcmSamples.splice(0, 3200);
-          const pcm16 = floatTo16BitPCM(chunk);
-          const audioRequest = {
-            event: 200,
-            source_audio: { data: arrayBufferToBase64(pcm16.buffer) }
-          };
-          ipcRenderer.invoke('doubao-send', audioRequest)
-            .catch(e => log(`发送音频失败: ${e.message || e}`));
+          var chunk = pcmSamples.splice(0, 3200);
+          var pcm16 = floatTo16BitPCM(chunk);
+          var audioRequest = { event: 200, source_audio: { data: arrayBufferToBase64(pcm16.buffer) } };
+          ipcRenderer.invoke('doubao-send', audioRequest).catch(function(e) { log('发送音频失败: ' + (e.message || e)); });
         }
       };
-
       audioSourceNode.connect(audioProcessorNode);
       audioProcessorNode.connect(audioContext.destination);
     }
 
     function resampleTo16k(input, inputSampleRate) {
       if (inputSampleRate === 16000) return Array.from(input);
-      const ratio = inputSampleRate / 16000;
-      const outputLength = Math.floor(input.length / ratio);
-      const output = new Array(outputLength);
-      for (let i = 0; i < outputLength; i++) {
-        const sourceIndex = i * ratio;
-        const index = Math.floor(sourceIndex);
-        const nextIndex = Math.min(index + 1, input.length - 1);
-        const fraction = sourceIndex - index;
+      var ratio = inputSampleRate / 16000;
+      var outputLength = Math.floor(input.length / ratio);
+      var output = new Array(outputLength);
+      for (var i = 0; i < outputLength; i++) {
+        var sourceIndex = i * ratio;
+        var index = Math.floor(sourceIndex);
+        var nextIndex = Math.min(index + 1, input.length - 1);
+        var fraction = sourceIndex - index;
         output[i] = input[index] + (input[nextIndex] - input[index]) * fraction;
       }
       return output;
     }
 
     function floatTo16BitPCM(input) {
-      const output = new Int16Array(input.length);
-      for (let i = 0; i < input.length; i++) {
-        const s = Math.max(-1, Math.min(1, input[i]));
+      var output = new Int16Array(input.length);
+      for (var i = 0; i < input.length; i++) {
+        var s = Math.max(-1, Math.min(1, input[i]));
         output[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
       }
       return output;
     }
 
     function arrayBufferToBase64(buffer) {
-      let binary = '';
-      const bytes = new Uint8Array(buffer);
-      const len = bytes.byteLength;
-      for (let i = 0; i < len; i++) { binary += String.fromCharCode(bytes[i]); }
+      var binary = '';
+      var bytes = new Uint8Array(buffer);
+      for (var i = 0; i < bytes.byteLength; i++) { binary += String.fromCharCode(bytes[i]); }
       return btoa(binary);
     }
 
     function base64ToUtf8(base64) {
       try {
-        const binary = atob(base64);
-        const bytes = new Uint8Array(binary.length);
-        for (let i = 0; i < binary.length; i++) { bytes[i] = binary.charCodeAt(i); }
+        var binary = atob(base64);
+        var bytes = new Uint8Array(binary.length);
+        for (var i = 0; i < binary.length; i++) { bytes[i] = binary.charCodeAt(i); }
         return new TextDecoder().decode(bytes);
       } catch (e) { return ''; }
     }
 
     function shouldRetrySession(errorMessage, statusCode) {
-      const text = `${errorMessage || ''} ${statusCode || ''}`.toLowerCase();
-      if (text.includes('invalid') || text.includes('api key') || text.includes('unauthorized') || text.includes('45000001')) {
+      var text = (errorMessage || '') + ' ' + (statusCode || '');
+      if (text.toLowerCase().indexOf('invalid') !== -1 || text.indexOf('api key') !== -1 || text.indexOf('unauthorized') !== -1 || text.indexOf('45000001') !== -1) {
         return false;
       }
       return true;
@@ -949,107 +797,66 @@
     function scheduleReconnect(reason) {
       if (!isTranslating || manualStopping || !currentConfig) return;
       if (reconnectTimer) return;
-
-      if (reconnectAttempts >= MAX_RECONNECT_ATTEMPTS) {
-        log(`重连已达上限。原因: ${reason}`);
-        updateStatus('连接不稳定，已停止', 'error');
-        stopTranslation();
-        return;
-      }
-
-      reconnectAttempts += 1;
-      isSessionStarted = false;
-      const delay = Math.min(30000, 1000 * Math.pow(2, reconnectAttempts - 1));
-      log(`准备重连 (${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS})，${Math.round(delay / 1000)}秒后。原因: ${reason}`);
-      updateStatus(`等待重连 ${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS}`, 'translating');
-
-      ipcRenderer.invoke('doubao-disconnect').catch(() => {});
-      reconnectTimer = setTimeout(async () => {
+      if (reconnectAttempts >= MAX_RECONNECT_ATTEMPTS) { log('重连已达上限。原因: ' + reason); updateStatus('连接不稳定，已停止', 'error'); stopTranslation(); return; }
+      reconnectAttempts += 1; isSessionStarted = false;
+      var delay = Math.min(30000, 1000 * Math.pow(2, reconnectAttempts - 1));
+      log('准备重连 (' + reconnectAttempts + '/' + MAX_RECONNECT_ATTEMPTS + ')，' + Math.round(delay / 1000) + '秒后。原因: ' + reason);
+      updateStatus('等待重连 ' + reconnectAttempts + '/' + MAX_RECONNECT_ATTEMPTS, 'translating');
+      ipcRenderer.invoke('doubao-disconnect').catch(function() {});
+      reconnectTimer = setTimeout(async function() {
         reconnectTimer = null;
         if (!isTranslating || manualStopping || !currentConfig) return;
-
-        try {
-          await connectAndStartSession(currentConfig, true);
-        } catch (error) {
-          log(`重连失败: ${error.message || error}`);
-          scheduleReconnect(`重连失败: ${error.message || error}`);
-        }
+        try { await connectAndStartSession(currentConfig, true); }
+        catch (error) { log('重连失败: ' + (error.message || error)); scheduleReconnect('重连失败: ' + (error.message || error)); }
       }, delay);
     }
 
     function startWatchdog() {
       stopWatchdog();
-      watchdogTimer = setInterval(() => {
+      watchdogTimer = setInterval(function() {
         if (!isTranslating || manualStopping || !isSessionStarted) return;
-
-        const idleMs = Date.now() - lastMessageAt;
-        if (idleMs > WATCHDOG_TIMEOUT_MS) {
-          log(`超过 ${Math.round(WATCHDOG_TIMEOUT_MS / 1000)} 秒未收到服务端事件，触发重连`);
+        if (Date.now() - lastMessageAt > WATCHDOG_TIMEOUT_MS) {
+          log('超过 ' + Math.round(WATCHDOG_TIMEOUT_MS / 1000) + ' 秒未收到服务端事件，触发重连');
           scheduleReconnect('长时间无服务端事件');
         }
       }, 15000);
     }
 
-    function stopWatchdog() {
-      if (watchdogTimer) { clearInterval(watchdogTimer); watchdogTimer = null; }
-    }
-
-    function clearReconnectTimer() {
-      if (reconnectTimer) { clearTimeout(reconnectTimer); reconnectTimer = null; }
-    }
+    function stopWatchdog() { if (watchdogTimer) { clearInterval(watchdogTimer); watchdogTimer = null; } }
+    function clearReconnectTimer() { if (reconnectTimer) { clearTimeout(reconnectTimer); reconnectTimer = null; } }
 
     function releaseAudioCapture() {
       log('释放音频采集');
-      if (audioProcessorNode) {
-        audioProcessorNode.disconnect();
-        audioProcessorNode.onaudioprocess = null;
-        audioProcessorNode = null;
-      }
+      if (audioProcessorNode) { audioProcessorNode.disconnect(); audioProcessorNode.onaudioprocess = null; audioProcessorNode = null; }
       if (audioSourceNode) { audioSourceNode.disconnect(); audioSourceNode = null; }
-      if (audioStream) { audioStream.getTracks().forEach(track => track.stop()); audioStream = null; }
+      if (audioStream) { audioStream.getTracks().forEach(function(t) { t.stop(); }); audioStream = null; }
       if (audioContext) { audioContext.close(); audioContext = null; }
     }
 
     function stopTranslation() {
       log('=== 停止翻译 ===');
-      manualStopping = true;
-      isTranslating = false;
-      isSessionStarted = false;
-      clearReconnectTimer();
-      stopWatchdog();
-
+      manualStopping = true; isTranslating = false; isSessionStarted = false;
+      clearReconnectTimer(); stopWatchdog();
       pcmSamples = [];
       releaseAudioCapture();
-
-      ipcRenderer.invoke('doubao-send', { event: 102 }).catch(() => {});
-      ipcRenderer.invoke('doubao-disconnect').catch(() => {});
-      ws = null;
+      ipcRenderer.invoke('doubao-send', { event: 102 }).catch(function() {});
+      ipcRenderer.invoke('doubao-disconnect').catch(function() {});
       currentConfig = null;
-
-      startBtn.disabled = false;
-      stopBtn.disabled = true;
+      setTranslateButton('idle');
       updateStatus('已停止', 'idle');
     }
 
     function toggleFloat() {
       floatVisible = !floatVisible;
-      if (floatVisible) {
-        ipcRenderer.invoke('show-floating');
-        toggleFloatBtn.textContent = '隐藏浮窗';
-      } else {
-        ipcRenderer.invoke('hide-floating');
-        toggleFloatBtn.textContent = '显示浮窗';
-      }
+      if (floatVisible) { ipcRenderer.invoke('show-floating'); toggleFloatBtn.textContent = '隐藏浮窗'; }
+      else { ipcRenderer.invoke('hide-floating'); toggleFloatBtn.textContent = '显示浮窗'; }
     }
 
-    // --- Onboarding Wizard ---
-    let wizardStep = 0;
-    let wizardAudioEnv = null;
-
-    async function checkOnboarding() {
-      const complete = await ipcRenderer.invoke('is-onboarding-complete');
-      if (!complete) showWizard();
-    }
+    // --- Wizard ---
+    var wizardStep = 0;
+    var wizardAudioEnv = null;
+    var multiOutputDeviceName = null;
+    var blackHolePollTimer = null;
 
     function showWizard() {
       document.getElementById('wizardOverlay').classList.remove('hidden');
@@ -1057,18 +864,11 @@
       renderWizardStep();
     }
 
-    function hideWizard() {
-      document.getElementById('wizardOverlay').classList.add('hidden');
-    }
-
-    async function completeOnboarding() {
-      await ipcRenderer.invoke('complete-onboarding');
-      hideWizard();
-    }
+    function hideWizard() { document.getElementById('wizardOverlay').classList.add('hidden'); }
 
     function setWizardDots(step) {
-      for (let i = 1; i <= 3; i++) {
-        const dot = document.getElementById('dot' + i);
+      for (var i = 1; i <= 2; i++) {
+        var dot = document.getElementById('dot' + i);
         dot.className = 'wizard-step-dot';
         if (i < step) dot.classList.add('done');
         if (i === step) dot.classList.add('active');
@@ -1077,19 +877,14 @@
 
     async function renderWizardStep() {
       setWizardDots(wizardStep);
-      const title = document.getElementById('wizardTitle');
-      const body = document.getElementById('wizardBody');
-      const buttons = document.getElementById('wizardButtons');
-
+      var title = document.getElementById('wizardTitle');
+      var body = document.getElementById('wizardBody');
+      var buttons = document.getElementById('wizardButtons');
       switch (wizardStep) {
         case 0: await renderAudioStep(title, body, buttons); break;
         case 1: renderApiKeyStep(title, body, buttons); break;
-        case 2: await renderTestStep(title, body, buttons); break;
       }
     }
-
-    let multiOutputDeviceName = null;
-    let blackHolePollTimer = null;
 
     function audioStepIcon(status) {
       switch (status) {
@@ -1101,394 +896,301 @@
       }
     }
 
-    function buildAudioSubStep(status, label, detail, actionHtml) {
-      return '<div class="check-item" style="flex-wrap: wrap;">' +
-        audioStepIcon(status) +
-        '<span style="flex:1;">' + label +
+    function buildAudioSubStep(id, status, label, detail, actionHtml) {
+      return '<div class="check-item" id="' + id + '" style="flex-wrap: wrap;">' +
+        audioStepIcon(status) + '<span style="flex:1;">' + label +
         (detail ? '<br><small style="color:#64748B;">' + detail + '</small>' : '') +
-        '</span>' +
-        (actionHtml || '') +
-        '</div>';
+        '</span>' + (actionHtml || '') + '</div>';
+    }
+
+    function updateCheckItem(id, status, label, detail, actionHtml) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      el.innerHTML = audioStepIcon(status) + '<span style="flex:1;">' + label +
+        (detail ? '<br><small style="color:#64748B;">' + detail + '</small>' : '') +
+        '</span>' + (actionHtml || '');
     }
 
     async function renderAudioStep(title, body, buttons) {
       title.textContent = 'Set Up Audio';
       clearBlackHolePoll();
+      try { wizardAudioEnv = await ipcRenderer.invoke('get-audio-environment'); }
+      catch (e) { wizardAudioEnv = { supported: false, message: e.message }; }
 
-      try {
-        wizardAudioEnv = await ipcRenderer.invoke('get-audio-environment');
-      } catch (e) {
-        wizardAudioEnv = { supported: false, message: e.message };
-      }
+      var bhOk = wizardAudioEnv.blackHoleFound;
+      var moOk = wizardAudioEnv.isDefaultOutputMultiOutput;
+      var bhStatus, moStatus, swStatus;
+      var bhAction = '', moAction = '', swAction = '';
+      var needAction = false;
 
-      const bhOk = wizardAudioEnv.blackHoleFound;
-      const moOk = wizardAudioEnv.isDefaultOutputMultiOutput;
+      if (bhOk) { bhStatus = 'ok'; } else { bhStatus = 'warn'; needAction = true; bhAction = '<span class="fix-link" id="btnInstallBH">Install</span>'; }
 
-      let bhStatus, moStatus, swStatus;
-      let bhAction = '', moAction = '', swAction = '';
-      let needAction = false;
-
-      if (bhOk) {
-        bhStatus = 'ok';
-        bhAction = '';
-      } else {
-        bhStatus = 'warn';
-        needAction = true;
-        bhAction = '<span class="fix-link" id="btnInstallBH">Install</span>';
-      }
-
-      if (moOk) {
-        moStatus = 'ok';
-        moAction = '';
-      } else if (!bhOk) {
-        moStatus = 'pending';
-        moAction = '';
-      } else {
-        moStatus = 'warn';
-        needAction = true;
-        let deviceOptions = '';
+      if (moOk) { moStatus = 'ok'; }
+      else if (!bhOk) { moStatus = 'pending'; }
+      else {
+        moStatus = 'warn'; needAction = true;
+        var deviceOptions = '';
         try {
-          const devList = await ipcRenderer.invoke('list-output-devices');
+          var devList = await ipcRenderer.invoke('list-output-devices');
           if (devList.ok && devList.devices.length > 0) {
-            const defaultOut = wizardAudioEnv.defaultOutputName || '';
-            deviceOptions = devList.devices.map(d =>
-              '<option value="' + d.replace(/"/g, '&quot;') + '"' +
-              (d === defaultOut ? ' selected' : '') + '>' + d + '</option>'
-            ).join('');
+            var defaultOut = wizardAudioEnv.defaultOutputName || '';
+            deviceOptions = devList.devices.map(function(d) {
+              return '<option value="' + d.replace(/"/g, '&quot;') + '"' + (d === defaultOut ? ' selected' : '') + '>' + d + '</option>';
+            }).join('');
           }
         } catch (e) {}
-
         if (deviceOptions) {
           moAction = '<select id="selectOutputDevice" style="font-size:12px;padding:4px 8px;border-radius:4px;border:1px solid #E2E8F0;max-width:150px;background:#F8FAFC;">' +
-            deviceOptions + '</select>' +
-            '<span class="fix-link" id="btnCreateMO" style="margin-left:4px;">Create</span>';
-        } else {
-          moAction = '<span class="fix-link" id="btnCreateMO">Create</span>';
-        }
+            deviceOptions + '</select><span class="fix-link" id="btnCreateMO" style="margin-left:4px;">Create</span>';
+        } else { moAction = '<span class="fix-link" id="btnCreateMO">Create</span>'; }
       }
 
       swStatus = moOk ? 'ok' : (!bhOk ? 'pending' : 'warn');
-      if (swStatus === 'warn') {
-        needAction = true;
-        swAction = '<span class="fix-link" id="btnSwitchOut">Switch</span>';
-      }
+      if (swStatus === 'warn') { needAction = true; swAction = '<span class="fix-link" id="btnSwitchOut">Switch</span>'; }
 
-      let html = '';
-      html += buildAudioSubStep(bhStatus, 'BlackHole Driver',
+      var html = '';
+      html += buildAudioSubStep('check-bh', bhStatus, 'BlackHole Driver',
         bhOk ? 'Installed' : 'Virtual audio driver to capture system sound', bhAction);
-      html += buildAudioSubStep(moStatus, 'Multi-Output Device',
+      html += buildAudioSubStep('check-mo', moStatus, 'Multi-Output Device',
         moOk ? ('Current: ' + (wizardAudioEnv.defaultOutputName || '')) : 'Merge BlackHole + your output device', moAction);
-      html += buildAudioSubStep(swStatus, 'System Output',
+      html += buildAudioSubStep('check-sw', swStatus, 'System Output',
         moOk ? 'Set to multi-output' : 'Not yet switched', swAction);
-
       if (needAction) {
-        html += '<div class="guide-text">' +
-          '<strong>Why?</strong> BlackHole captures system audio for translation. ' +
-          'A Multi-Output Device lets you hear audio while translating.' +
-          '</div>';
+        html += '<div class="guide-text"><strong>Why?</strong> BlackHole captures your Mac\'s audio so it can be translated. ' +
+          'A Multi-Output Device merges BlackHole with your speakers/headphones so you can still hear the sound.</div>';
       }
-
       html += '<div id="audioStepMsg" style="margin-top:10px;font-size:13px;color:#0891B2;min-height:20px;"></div>';
-
       body.innerHTML = html;
 
-      const btnBH = document.getElementById('btnInstallBH');
+      var btnBH = document.getElementById('btnInstallBH');
       if (btnBH) {
-        btnBH.addEventListener('click', async () => {
-          const msg = document.getElementById('audioStepMsg');
-          msg.textContent = 'Launching BlackHole installer...';
-          btnBH.disabled = true;
-          btnBH.textContent = '...';
+        btnBH.addEventListener('click', async function() {
+          var msg = document.getElementById('audioStepMsg');
+          msg.textContent = 'Opening BlackHole installer... Follow the steps (admin password required).';
+          msg.style.color = '#0891B2';
+          btnBH.disabled = true; btnBH.textContent = '...';
           try {
             await ipcRenderer.invoke('install-blackhole');
-            msg.textContent = 'Installer opened. Complete installation, then click below.';
-            btnBH.textContent = 'Open Security';
-            btnBH.disabled = false;
-            btnBH.onclick = async () => {
-              await ipcRenderer.invoke('open-privacy-security');
-              msg.textContent = 'Click "Allow" in Privacy & Security, then wait...';
-              btnBH.textContent = 'Waiting...';
-              btnBH.disabled = true;
-              pollBlackHole(title, body, buttons);
-            };
+            // Auto-detect: start polling immediately, don't force user to click "Open Security"
+            btnBH.textContent = 'Detecting...';
+            msg.textContent = 'Waiting for BlackHole to be detected...';
+            pollBlackHoleWithAutoDetect(title, body, buttons, btnBH, 0);
           } catch (e) {
-            msg.textContent = 'Failed: ' + (e.message || e);
+            msg.textContent = 'Could not open installer: ' + (e.message || e);
             msg.style.color = '#DC2626';
-            btnBH.textContent = 'Retry';
-            btnBH.disabled = false;
+            btnBH.textContent = 'Retry'; btnBH.disabled = false;
           }
         });
       }
 
-      const btnMO = document.getElementById('btnCreateMO');
+      var btnMO = document.getElementById('btnCreateMO');
       if (btnMO) {
-        btnMO.addEventListener('click', async () => {
-          const msg = document.getElementById('audioStepMsg');
-          const sel = document.getElementById('selectOutputDevice');
-          const targetDevice = sel ? sel.value : null;
-
-          msg.textContent = targetDevice
-            ? 'Creating Multi-Output (BlackHole + ' + targetDevice + ')...'
-            : 'Creating Multi-Output...';
+        btnMO.addEventListener('click', async function() {
+          var msg = document.getElementById('audioStepMsg');
+          var sel = document.getElementById('selectOutputDevice');
+          var targetDevice = sel ? sel.value : null;
+          msg.textContent = targetDevice ? 'Creating Multi-Output (BlackHole + ' + targetDevice + ')...' : 'Creating Multi-Output...';
           msg.style.color = '#0891B2';
-          btnMO.style.pointerEvents = 'none';
-          btnMO.textContent = '...';
+          btnMO.style.pointerEvents = 'none'; btnMO.textContent = '...';
           if (sel) sel.disabled = true;
-
           try {
-            const result = await ipcRenderer.invoke('create-multi-output', targetDevice);
+            var result = await ipcRenderer.invoke('create-multi-output', targetDevice);
             multiOutputDeviceName = result.deviceName;
-            msg.textContent = 'Created: ' + result.deviceName;
-            msg.style.color = '#059669';
-            await renderAudioStep(title, body, buttons);
-            autoSwitchOutput(title, body, buttons);
+            // Save device name to config immediately for future auto-restore
+            var curConfig = await ipcRenderer.invoke('load-config');
+            curConfig.multiOutputDeviceName = result.deviceName;
+            await ipcRenderer.invoke('save-config', curConfig);
+            msg.textContent = 'Created: ' + result.deviceName; msg.style.color = '#059669';
+            updateCheckItem('check-mo', 'ok', 'Multi-Output Device', 'Current: ' + (result.deviceName || ''), '');
+            updateCheckItem('check-sw', 'loading', 'System Output', 'Switching...', '');
+            await autoSwitchOutput(title, body, buttons);
           } catch (e) {
-            msg.textContent = 'Failed: ' + (e.message || e);
-            msg.style.color = '#DC2626';
-            btnMO.textContent = 'Retry';
-            btnMO.style.pointerEvents = 'auto';
+            msg.textContent = 'Failed: ' + (e.message || e); msg.style.color = '#DC2626';
+            btnMO.textContent = 'Retry'; btnMO.style.pointerEvents = 'auto';
             if (sel) sel.disabled = false;
           }
         });
       }
 
-      const btnSW = document.getElementById('btnSwitchOut');
+      var btnSW = document.getElementById('btnSwitchOut');
       if (btnSW) {
-        btnSW.addEventListener('click', async () => {
+        btnSW.addEventListener('click', async function() {
           await doSwitchOutput(title, body, buttons, btnSW);
         });
       }
 
-      const allDone = bhOk && moOk;
-      buttons.innerHTML = '<button class="btn btn-primary" id="wizardNext1">' +
-        (allDone ? 'Next' : 'Skip') + '</button>';
-      document.getElementById('wizardNext1').addEventListener('click', () => {
-        clearBlackHolePoll();
-        wizardStep = 1;
-        renderWizardStep();
-      });
+      var btns = document.getElementById('wizardButtons');
+      btns.innerHTML = '<button class="btn btn-primary" id="wizardNext1">' + (bhOk && moOk ? 'Next' : 'Skip for now') + '</button>';
+      var nextBtn = document.getElementById('wizardNext1');
+      if (nextBtn) {
+        nextBtn.onclick = function() { clearBlackHolePoll(); wizardStep = 1; renderWizardStep(); };
+        nextBtn.addEventListener('click', function() { clearBlackHolePoll(); wizardStep = 1; renderWizardStep(); });
+      }
     }
 
-    async function autoSwitchOutput(title, body, buttons) {
-      const btnSW = document.getElementById('btnSwitchOut');
-      if (btnSW) await doSwitchOutput(title, body, buttons, btnSW);
-    }
+    async function autoSwitchOutput(title, body, buttons) { await doSwitchOutput(title, body, buttons, null); }
 
     async function doSwitchOutput(title, body, buttons, btn) {
-      const msg = document.getElementById('audioStepMsg');
+      var msg = document.getElementById('audioStepMsg');
       if (!msg) return;
-      msg.textContent = 'Switching output...';
-      msg.style.color = '#0891B2';
+      msg.textContent = 'Switching output...'; msg.style.color = '#0891B2';
       if (btn) { btn.style.pointerEvents = 'none'; btn.textContent = '...'; }
-
-      const targetName = multiOutputDeviceName || 'RealTime Translator';
+      var targetName = multiOutputDeviceName || 'RealTime Translator';
       try {
-        const result = await ipcRenderer.invoke('switch-output', targetName);
-        msg.textContent = 'Switched to: ' + (result.deviceName || targetName);
-        msg.style.color = '#059669';
-        await renderAudioStep(title, body, buttons);
+        var result = await ipcRenderer.invoke('switch-output', targetName);
+        msg.textContent = 'Switched to: ' + (result.deviceName || targetName); msg.style.color = '#059669';
+        updateCheckItem('check-sw', 'ok', 'System Output', 'Set to multi-output', '');
+        var btnsEl = document.getElementById('wizardButtons');
+        if (btnsEl) {
+          btnsEl.innerHTML = '<button class="btn btn-primary" id="wizardNext1">Next</button>';
+          var nb = document.getElementById('wizardNext1');
+          if (nb) {
+            nb.onclick = function() { clearBlackHolePoll(); wizardStep = 1; renderWizardStep(); };
+            nb.addEventListener('click', function() { clearBlackHolePoll(); wizardStep = 1; renderWizardStep(); });
+          }
+        }
       } catch (e) {
-        msg.textContent = 'Failed: ' + (e.message || e);
-        msg.style.color = '#DC2626';
+        msg.textContent = 'Failed: ' + (e.message || e); msg.style.color = '#DC2626';
         if (btn) { btn.textContent = 'Retry'; btn.style.pointerEvents = 'auto'; }
       }
     }
 
-    function pollBlackHole(title, body, buttons) {
+    function pollBlackHoleWithAutoDetect(title, body, buttons, btnBH, startAttempt) {
       clearBlackHolePoll();
-      let attempts = 0;
-      blackHolePollTimer = setInterval(async () => {
+      var attempts = startAttempt || 0;
+      blackHolePollTimer = setInterval(async function() {
         attempts++;
-        const msg = document.getElementById('audioStepMsg');
+        var msg = document.getElementById('audioStepMsg');
         try {
-          const env = await ipcRenderer.invoke('get-audio-environment');
+          var env = await ipcRenderer.invoke('get-audio-environment');
           if (env.blackHoleFound) {
             clearBlackHolePoll();
-            if (msg) {
-              msg.textContent = 'BlackHole detected.';
-              msg.style.color = '#059669';
-            }
+            if (msg) { msg.textContent = 'BlackHole detected!'; msg.style.color = '#059669'; }
             wizardAudioEnv = env;
+            if (btnBH) { btnBH.textContent = 'Installed'; btnBH.disabled = true; btnBH.style.color = '#059669'; }
             await renderAudioStep(title, body, buttons);
             return;
           }
+          // After 10s (~3 attempts), suggest opening Security settings
+          if (attempts === 4 && btnBH) {
+            btnBH.textContent = 'Open Security';
+            btnBH.disabled = false;
+            if (msg) { msg.textContent = 'Not detected yet. If macOS blocked the driver, click "Open Security".'; }
+            btnBH.onclick = async function() {
+              await ipcRenderer.invoke('open-privacy-security');
+              btnBH.textContent = 'Waiting...'; btnBH.disabled = true;
+              if (msg) msg.textContent = 'Check Privacy & Security for any "Allow" button, then wait...';
+              // Continue polling with same timer
+            };
+          }
           if (msg && attempts <= 10) {
-            msg.textContent = 'Waiting for BlackHole... (' + (attempts * 3) + 's)';
+            msg.textContent = msg.textContent || ('Waiting for BlackHole... (' + (attempts * 3) + 's)');
           }
           if (attempts > 10) {
             clearBlackHolePoll();
             if (msg) {
-              msg.textContent = 'Timeout. Confirm you approved in Privacy & Security, then restart the app.';
+              msg.textContent = 'Not detected after 30s. Try: 1) Restart your Mac, 2) Reopen this app.';
               msg.style.color = '#DC2626';
             }
-            await renderAudioStep(title, body, buttons);
+            if (btnBH) { btnBH.textContent = 'Retry'; btnBH.disabled = false; }
           }
         } catch (e) {}
       }, 3000);
     }
 
-    function clearBlackHolePoll() {
-      if (blackHolePollTimer) {
-        clearInterval(blackHolePollTimer);
-        blackHolePollTimer = null;
-      }
+    function pollBlackHole(title, body, buttons) {
+      pollBlackHoleWithAutoDetect(title, body, buttons, null, 0);
     }
+
+    function clearBlackHolePoll() { if (blackHolePollTimer) { clearInterval(blackHolePollTimer); blackHolePollTimer = null; } }
 
     function renderApiKeyStep(title, body, buttons) {
       title.textContent = 'API Key';
-
       body.innerHTML =
         '<div style="margin-bottom:16px;">' +
         '<label style="font-size:13px;font-weight:500;display:block;margin-bottom:5px;color:#475569;">API Key</label>' +
-        '<input type="text" id="wizardApiKey" placeholder="Paste your Volcengine API Key" style="width:100%;box-sizing:border-box;padding:9px 12px;font-size:14px;border:1px solid #E2E8F0;border-radius:6px;background:#F8FAFC;">' +
-        '<div style="font-size:12px;color:#94A3B8;margin-top:4px;">' +
-        'Get it from <a href="#" id="wizardConsoleLink" style="color:#0891B2;">Volcengine Console</a></div></div>' +
-        '<div style="margin-bottom:16px;">' +
-        '<label style="font-size:13px;font-weight:500;display:block;margin-bottom:5px;color:#475569;">Resource ID</label>' +
-        '<input type="text" id="wizardResourceId" value="volc.service_type.10053" style="width:100%;box-sizing:border-box;padding:9px 12px;font-size:14px;border:1px solid #E2E8F0;border-radius:6px;background:#F8FAFC;">' +
-        '</div>' +
+        '<input type="text" id="wizardApiKey" placeholder="Paste your Volcengine Speech API Key" style="width:100%;box-sizing:border-box;padding:9px 12px;font-size:14px;border:1px solid #E2E8F0;border-radius:6px;background:#F8FAFC;">' +
+        '<div style="font-size:12px;color:#94A3B8;margin-top:4px;">Get yours from <a href="#" id="wizardConsoleLink" style="color:#0891B2;">Volcengine Speech Console</a>. A speech translation API key is needed.</div></div>' +
         '<div id="wizardApiError" style="color:#DC2626;font-size:13px;margin-top:8px;display:none;"></div>';
 
-      document.getElementById('wizardConsoleLink').addEventListener('click', (e) => {
+      // Pre-fill from already-loaded config (e.g. Keychain)
+      if (appKeyInput.value) { document.getElementById('wizardApiKey').value = appKeyInput.value; }
+
+      document.getElementById('wizardConsoleLink').addEventListener('click', function(e) {
         e.preventDefault();
         require('electron').shell.openExternal('https://console.volcengine.com/speech/service/8');
       });
 
       buttons.innerHTML =
         '<button class="btn btn-secondary" id="wizardBack2">Back</button>' +
-        '<button class="btn btn-primary" id="wizardNext2">Save & Continue</button>';
+        '<button class="btn btn-primary" id="wizardFinish">Finish</button>';
 
-      document.getElementById('wizardBack2').addEventListener('click', () => {
-        wizardStep = 0; renderWizardStep();
-      });
+      document.getElementById('wizardBack2').addEventListener('click', function() { wizardStep = 0; renderWizardStep(); });
 
-      document.getElementById('wizardNext2').addEventListener('click', async () => {
-        const apiKey = document.getElementById('wizardApiKey').value.trim();
-        const resourceId = document.getElementById('wizardResourceId').value.trim();
-
+      document.getElementById('wizardFinish').addEventListener('click', async function() {
+        var apiKey = document.getElementById('wizardApiKey').value.trim();
+        var resourceId = document.getElementById('resourceId').value;
         if (!apiKey) {
           document.getElementById('wizardApiError').textContent = 'API Key is required';
           document.getElementById('wizardApiError').style.display = 'block';
           return;
         }
-
+        // Preserve multiOutputDeviceName from current config
+        var existingConfig = await ipcRenderer.invoke('load-config');
         await ipcRenderer.invoke('save-config', {
-          appKey: apiKey,
-          resourceId: resourceId,
-          sourceLanguage: 'id',
-          targetLanguage: 'zh'
+          appKey: apiKey, resourceId: resourceId,
+          sourceLanguage: 'id', targetLanguage: 'zh',
+          multiOutputDeviceName: existingConfig.multiOutputDeviceName || ''
         });
-
         appKeyInput.value = apiKey;
         resourceIdInput.value = resourceId;
-
-        wizardStep = 2; renderWizardStep();
+        document.getElementById('headerSubtitle').textContent = '实时音频翻译 · ID → ZH';
+        await ipcRenderer.invoke('complete-onboarding');
+        hideWizard();
+        document.getElementById('appHeader').classList.add('compact');
+        await updatePrerequisitesStatus();
       });
     }
 
-    async function renderTestStep(title, body, buttons) {
-      title.textContent = 'Quick Test';
+    // --- Init ---
+    async function init() {
+      log('App initializing...');
+      var config = await loadSavedConfig();
+      updateAudioInputVisibility();
+      loadAudioInputDevices(false);
 
-      body.innerHTML =
-        '<div class="test-result" id="testResult">' +
-        '<div class="icon" style="font-size:40px;margin-bottom:10px;color:#0891B2;">&#9654;</div>' +
-        '<div style="font-size:14px;margin-bottom:10px;">Start a test to verify audio and translation</div>' +
-        '<div style="font-size:12px;color:#94A3B8;">Play some Indonesian audio/video first</div>' +
-        '<div id="testStatus" style="margin-top:12px;color:#0891B2;display:none;">Testing...</div>' +
-        '</div>';
-
-      buttons.innerHTML =
-        '<button class="btn btn-secondary" id="wizardBack3">Back</button>' +
-        '<button class="btn btn-primary" id="wizardTest">Test</button>' +
-        '<button class="btn btn-success hidden" id="wizardDone">Finish</button>';
-
-      document.getElementById('wizardBack3').addEventListener('click', () => {
-        wizardStep = 1; renderWizardStep();
-      });
-
-      document.getElementById('wizardTest').addEventListener('click', async () => {
-        const testBtn = document.getElementById('wizardTest');
-        const testStatus = document.getElementById('testStatus');
-        const testResult = document.getElementById('testResult');
-
-        testBtn.disabled = true;
-        testStatus.style.display = 'block';
-        testStatus.textContent = 'Connecting...';
-
-        if (!appKeyInput.value) {
-          const saved = await ipcRenderer.invoke('load-config');
-          if (saved.appKey) appKeyInput.value = saved.appKey;
-          if (saved.resourceId) resourceIdInput.value = saved.resourceId;
-        }
-
-        if (!appKeyInput.value) {
-          testResult.className = 'test-result fail';
-          testResult.innerHTML =
-            '<div class="icon">&#10007;</div>' +
-            '<div style="font-size:14px;margin-bottom:6px;">No API Key</div>' +
-            '<div style="font-size:12px;color:#DC2626;">Go back and enter your API Key</div>';
-          testBtn.textContent = 'Retry';
-          testBtn.disabled = false;
-          testStatus.style.display = 'none';
-          return;
-        }
-
-        try {
-          await startTranslation();
-          testStatus.textContent = 'Translating... speak or play audio';
-
-          await new Promise(resolve => setTimeout(resolve, 5000));
-          stopTranslation();
-
-          testResult.className = 'test-result success';
-          testResult.innerHTML =
-            '<div class="icon">&#10003;</div>' +
-            '<div style="font-size:14px;margin-bottom:6px;">Test Complete</div>' +
-            '<div style="font-size:12px;color:#64748B;">If subtitles appeared in the floating window, you are all set.</div>';
-          testBtn.classList.add('hidden');
-          document.getElementById('wizardDone').classList.remove('hidden');
-        } catch (e) {
-          testResult.className = 'test-result fail';
-          testResult.innerHTML =
-            '<div class="icon">&#10007;</div>' +
-            '<div style="font-size:14px;margin-bottom:6px;">Test Failed</div>' +
-            '<div style="font-size:12px;color:#DC2626;">' + (e.message || 'Unknown error') + '</div>';
-          testBtn.textContent = 'Retry';
-          testBtn.disabled = false;
-        }
-
-        testStatus.style.display = 'none';
-      });
-
-      document.getElementById('wizardDone').addEventListener('click', async () => {
-        await completeOnboarding();
-      });
+      var onboarded = await ipcRenderer.invoke('is-onboarding-complete');
+      if (!onboarded) {
+        showWizard();
+      } else {
+        document.getElementById('appHeader').classList.add('compact');
+        await autoRestoreOutput();
+        await updatePrerequisitesStatus();
+      }
+      log('Ready');
     }
 
-    // Event bindings
-    startBtn.addEventListener('click', () => { log('Start'); startTranslation(); });
-    stopBtn.addEventListener('click', () => { log('Stop'); stopTranslation(); });
-    releaseAudioBtn.addEventListener('click', () => {
-      log('Release audio');
+    // --- Event bindings ---
+    translateToggleBtn.addEventListener('click', function() {
+      if (isTranslating) { stopTranslation(); } else { startTranslation(); }
+    });
+    releaseAudioBtn.addEventListener('click', function() {
       if (isTranslating) stopTranslation();
       else { releaseAudioCapture(); updateStatus('Audio released', 'idle'); }
     });
-    toggleFloatBtn.addEventListener('click', () => { log('Toggle float'); toggleFloat(); });
-    audioSourceTypeSelect.addEventListener('change', () => { updateAudioInputVisibility(); });
-    refreshDevicesBtn.addEventListener('click', () => { log('Refresh devices'); loadAudioInputDevices(true); });
-    checkAudioEnvBtn.addEventListener('click', () => { log('Check audio env'); checkAudioEnvironment(); });
-    restoreOutputBtn.addEventListener('click', () => { log('Restore output'); restoreOriginalOutput(); });
-    openAudioMidiBtn.addEventListener('click', () => { log('Open MIDI'); openAudioMidiSetup(); });
-    openSoundSettingsBtn.addEventListener('click', () => { log('Open Sound'); openSoundSettings(); });
+    toggleFloatBtn.addEventListener('click', function() { toggleFloat(); });
+    audioSourceTypeSelect.addEventListener('change', function() { updateAudioInputVisibility(); });
+    refreshDevicesBtn.addEventListener('click', function() { loadAudioInputDevices(true); });
+    checkAudioEnvBtn.addEventListener('click', function() { checkAudioEnvironment(); });
+    restoreOutputBtn.addEventListener('click', function() { restoreOriginalOutput(); });
+    openAudioMidiBtn.addEventListener('click', function() { openAudioMidiSetup(); });
+    openSoundSettingsBtn.addEventListener('click', function() { openSoundSettings(); });
+    toggleSettingsBtn.addEventListener('click', function() { toggleSettingsDrawer(); });
+    if (navigator.mediaDevices && navigator.mediaDevices.addEventListener) {
+      navigator.mediaDevices.addEventListener('devicechange', function() { loadAudioInputDevices(false); });
+    }
 
-    navigator.mediaDevices?.addEventListener?.('devicechange', () => { loadAudioInputDevices(false); });
-
-    loadSavedConfig();
-    updateAudioInputVisibility();
-    loadAudioInputDevices(false);
-    checkAudioEnvironment();
-    log('Ready');
-    checkOnboarding();
+    init();
   </script>
 </body>
 </html>

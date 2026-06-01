@@ -1,3 +1,9 @@
+// 父进程退出时管道断开，console.log 同步写会抛 EPIPE，捕获后静默退出
+process.on('uncaughtException', (err) => {
+  if (err.code === 'EPIPE') process.exit(0);
+  process.exit(1);
+});
+
 const WebSocket = require('ws');
 const http = require('http');
 const url = require('url');
